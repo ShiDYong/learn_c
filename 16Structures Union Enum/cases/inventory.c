@@ -14,6 +14,7 @@
 ********************************************************************************/
 #include<stdio.h>
 #include "readline.h"
+
 #define NAME_LEN 25
 #define MAX_PARTS 100
 //定义存储零件的结构的数组
@@ -25,6 +26,7 @@ struct part {
 
 int num_parts = 0;/*number of parts currently stored*/
 /*对应的函数原型*/
+//int find_part(int number);
 int find_part(int number);
 
 void insert(void);
@@ -45,19 +47,25 @@ int main(void) {
     //主循环提示用户输入，读取操作码
     for (;;) {
         printf("Enter operation code: ");
-        scanf(" %c",&code);
-        while (getchar() !='\n'); /*skips to end of line*/
+        scanf(" %c", &code);
+        while (getchar() != '\n'); /*skips to end of line*/
         switch (code) {
-            case 'i': insert();
+            case 'i':
+                insert();
                 break;
-            case 's': search();
+            case 's':
+                search();
                 break;
-            case 'u': update();
+            case 'u':
+                update();
                 break;
-            case 'p': print();
+            case 'p':
+                print();
                 break;
-            case 'q': return 0;//退出程序
-            default: printf("Illegal code\n");
+            case 'q':
+                return 0;//退出程序
+            default:
+                printf("Illegal code\n");
         }
         printf("\n");
     }
@@ -69,39 +77,40 @@ int main(void) {
  * @param number
  * @return
  */
-int find_part(int number){
+int find_part(int number) {
     int i;
-    for (i = 0;  i<num_parts ;i++)
-        if(inventory[i].number==number)
+    for (i = 0; i < num_parts; i++)
+        if (inventory[i].number == number)
             return i;
     return -1;
 }
+
 
 /**
  * insert: Prompts the user for information about a new part an then inserts the part into the
  *         database. Prints an error message and returns prematurely if the part already exists or
  *         the database if full.
  */
-void insert(void){
+void insert(void) {
     int part_number;
     //判断当前的database的容量是否已经满了
-    if(num_parts ==MAX_PARTS){
+    if (num_parts == MAX_PARTS) {
         printf("Database if full; can't add more parts.\n");
         return;
     }
     printf("Enter part number: ");
-    scanf("%d",&part_number);
+    scanf("%d", &part_number);
     //判断是否已经在数据库中存在了
-    if(find_part(part_number) >=0){
+    if (find_part(part_number) >= 0) {
         printf("Part already exists.\n");
         return;
     }
     //开始插入数据库中
-    inventory[num_parts].number=part_number;//注意要当前数据库下标的后面继续插入
+    inventory[num_parts].number = part_number;//注意要当前数据库下标的后面继续插入
     printf("Enter part name: ");
-    read_line(inventory[num_parts].name,NAME_LEN);//读取输入的字符
+    read_line(inventory[num_parts].name, NAME_LEN);//读取输入的字符
     printf("Enter quantity on hand: ");
-    scanf("%d",&inventory[num_parts].on_hand);
+    scanf("%d", &inventory[num_parts].on_hand);
     num_parts++;
 }
 
@@ -111,14 +120,14 @@ void insert(void){
  *        ,prints the name and quantity on hand; if not, prints an error message.
  *
  */
-void search(void){
-    int i,number;
+void search(void) {
+    int i, number;
     printf("Enter part number: ");
-    scanf("%d",&number);
+    scanf("%d", &number);
     i = find_part(number);//查询是否在数据库中
-    if(i>=0){
-        printf("Part name : %s\n",inventory[i].name);
-        printf("Quantity on hand: %d\n",inventory[i].on_hand);
+    if (i >= 0) {
+        printf("Part name : %s\n", inventory[i].name);
+        printf("Quantity on hand: %d\n", inventory[i].on_hand);
     } else
         printf("Part not fond.\n");
 }
@@ -129,15 +138,15 @@ void search(void){
  *         exist;otherwise, prompts the user to enter change in quantity on hand
  *         and updates the database.
  */
-void update(void){
-    int i,number,change;
+void update(void) {
+    int i, number, change;
     printf("Enter part number: ");
-    scanf("%d",&number);
-    i= find_part(number);
-    if(i >=0){
+    scanf("%d", &number);
+    i = find_part(number);
+    if (i >= 0) {
         printf("Enter change in quantity on hand: ");
-        scanf("%d",&change);
-        inventory[i].on_hand=change;
+        scanf("%d", &change);
+        inventory[i].on_hand = change;
     } else
         printf("Part not found.\n");
 }
@@ -146,12 +155,12 @@ void update(void){
  * print:Prints a listing of all parts in the database,showing the part number, part name, and quantity
  *       on hand, Parts are printed in the order in which they were entered into the database.
  */
-void print(void){
+void print(void) {
     int i;
     printf("Part Number     Part Name                   "
            "Quantity on Hand\n");
-    for (i = 0;  i< num_parts; i++)
-        printf("%7d         %-25s%11d\n",inventory[i].number,inventory[i].name,
+    for (i = 0; i < num_parts; i++)
+        printf("%7d         %-25s%11d\n", inventory[i].number, inventory[i].name,
                inventory[i].on_hand);
 
 }

@@ -129,7 +129,7 @@ int main(void) {
     printf("Popped element: %d\n", pop(stack));
     printf("Top element after pop: %d\n", peek(stack));
     print_stack(stack);
-    //clear_stack(stack);
+    clear_stack(stack);
     printf("Top element: %d\n", peek(stack));
 
     free(stack);
