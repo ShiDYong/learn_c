@@ -1,0 +1,3 @@
+/Users/yongshi/Downloads/MyCode/C_Programming/16Structures Union Enum/cases/CMakeFiles/case.dir
+/Users/yongshi/Downloads/MyCode/C_Programming/16Structures Union Enum/cases/CMakeFiles/edit_cache.dir
+/Users/yongshi/Downloads/MyCode/C_Programming/16Structures Union Enum/cases/CMakeFiles/rebuild_cache.dir

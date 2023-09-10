@@ -1,0 +1,6 @@
+In the example makefile, the targets include the  executable
+file ‘edit’,  and  the  object  files  ‘main.o’  and
+‘kbd.o’.   The   prerequisites   are   files   such   as
+‘main.c’ and ‘defs.h’. In fact, each  ‘.o’  file
+is both a target and a prerequisite . Recipes include  ‘cc
+-c main.c’ and ‘cc -c kbd.c’.
