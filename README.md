@@ -1,2 +1,2 @@
 # learn_c
-To c, or not to q, that's a question
+To c, or not to c, that's a question.
