@@ -275,13 +275,20 @@ void free_list(struct node *head) {
 int main(void) {
     // exec09();
     struct node *head = NULL;
-    insert_to_beginning(&head, 3);
+    insert_to_beginning(&head, 1);
     insert_to_beginning(&head, 4);
     insert_to_end(&head, 2);
-    insert_to_end(&head, 3);
+    insert_to_end(&head, 5);
+    insert_to_end(&head, 2);
     printf("3在链表中出现的次数：%d\n", count_occurrences(head, 3));
     printf("Linked list: ");
     print_list(head);
+    //插入链表使链表是有序的
+    int n = 4;
+    struct node *new_node = create_node(n);
+    insert_into_ordered_list(head,new_node);
+
+
     //释放链表占用的内存空间
     free_list(head);
 
