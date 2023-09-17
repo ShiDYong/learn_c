@@ -32,9 +32,10 @@ bool is_full(void);
 
 void push(int i);
 
-void push(int i);
+void push(int value);
 
 int pop(void);
+int peek(void);
 
 #endif
 /**
@@ -66,6 +67,8 @@ int pop(void);
  *        #define PRIVATE static
  *        将static写成PRIVATE是因为static在C语言中有很多写法，使用PRIVATE可以更清晰地指明这里它是被用来强制信息隐藏的。
  * */
+
+
 
 
 
