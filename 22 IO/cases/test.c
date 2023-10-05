@@ -4,3 +4,8 @@
 * @version: 1.0
 * @description: 
 ********************************************************************************/
+#include<stdio.h>
+
+int main(void){
+    printf("hello, world!\n");
+}

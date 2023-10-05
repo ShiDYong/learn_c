@@ -1,0 +1,3 @@
+add_subdirectory(cases)
+add_subdirectory(exerices)
+add_subdirectory(programming)
