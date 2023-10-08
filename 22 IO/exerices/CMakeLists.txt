@@ -1,1 +1,4 @@
-add_executable(exerices exerices.c)
+#生成可执行文件
+add_executable(IO_exerices exerices.c)
+#链接公共库
+target_link_libraries(IO_exerices Scanf_lib)

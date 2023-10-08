@@ -102,4 +102,3 @@ void test_get_position() {
 
 }
 
-
