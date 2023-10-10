@@ -155,9 +155,9 @@ void file_operation() {
  * 为打开的文件添加流：
  *  the freopen function is used to redirect file streams, allowing you to change where the standard input,
  *  standard output, or standard error are directed. This can be useful for redirecting input or output to
- *  files instead of the console, or for switching between different input or output sources during program execution.
- *  The freopen function is part of the standard C library and is typically used with three arguments:
- * FILE *freopen(const char *filename, const char *mode, FILE *stream);
+ *  files instead of the console, or for switching between different input or output sources during program
+ *  execution.The freopen function is part of the standard C library and is typically used with three arguments:
+ *  FILE *freopen(const char *filename, const char *mode, FILE *stream);
  */
 void test_freopen() {
     FILE *file = freopen("22 IO/cases/fopen_test.txt", "a+", stdout);
@@ -192,7 +192,8 @@ void test_buffering() {
     //int setvbuf(FILE *stream, char *buffer, int mode, size_t size);
     //用于设置文件流的缓冲模式和大小。 与 setbuf 函数相比，它提供了更多对缓冲的控制，允许您指定缓冲区大小和缓冲类型（完全缓冲、行缓冲或无缓冲
     //stream: A pointer to the FILE stream for which you want to set the buffer and mode.
-    //buffer: A pointer to the character array (buffer) that you want to use for buffering. If buffer is NULL, the function will allocate an automatic buffer.
+    //buffer: A pointer to the character array (buffer) that you want to use for buffering. If buffer is NULL,
+    // the function will allocate an automatic buffer.
     //mode: An integer indicating the buffering mode. It can take one of the following values:
     //_IOFBF: Full buffering (buffered mode).当缓冲区为空时，从流读入数据；当缓冲区满时，向流写入数据
     //_IOLBF: Line buffering.每次从流读入一行数据或向流写入一行数据
@@ -244,9 +245,11 @@ void single_character_output() {
     }
 
     //2.putc (Put Character):
-    //int putc(int character, FILE *stream) is essentially the same as fputc. It writes a single character to the file specified by the stream.
+    //int putc(int character, FILE *stream) is essentially the same as fputc. It writes a single
+    // character to the file specified by the stream.
     //Like fputc, it returns the character written if successful, or EOF if an error occurs.
-    //The putc function is often used interchangeably with fputc and is typically a macro defined in the C standard library
+    //The putc function is often used interchangeably with fputc and is typically a macro defined in
+    // the C standard library
     // as #define putc(c, stream) fputc(c, stream).
     if (file != NULL) {
         int ch = 'B'; //把A写入到文件fopen_test.txt

@@ -1,0 +1,6 @@
+To C or not to C, That's a question.
+That's good.
+To fix this error, you should read a character
+once and check it in the loop condition,
+and then increment n if the character is a period.
+Here's the corrected function:
