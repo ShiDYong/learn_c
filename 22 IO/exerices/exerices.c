@@ -165,6 +165,58 @@ int line_length(const char *filename, int n) {
 }
 
 
+/*
+ * Exercises 22.14
+ * (a) Write your own version of the `fgets` function. Make it behave as much like
+    the real `fgets` function as possible; in particular, make sure that it has the
+    proper return value. To avoid conflicts with the standard library, don't name
+    your function `fgets`.
+ */
+char *myFgets(char *str, int n, FILE *file) {
+    FILE *fp;
+    int c, len = 0;
+    if ((fp = fopen(file, "r")) != NULL) {
+        while (len < n - 1) {
+            c = fgetc(fp);
+            if (c == EOF || c == NULL) {
+                if (len == 0 || ferror(stderr))
+                    return NULL;
+                break;
+            }
+            str[len++] = c;
+            if (c == '\n') //是换行符\n
+                break;
+        }
+    }
+
+    str[len] = '\0'; //字符串是以空字符结尾的'\0';
+    fclose(fp);
+    return str;
+
+}
+
+
+/*
+ * Exercises: 22.14.b
+ * (b) Write your own version of `fputs`, following the same rules as in part (a).
+ *
+ */
+int MyFputs(const char *str, FILE *file) {
+    FILE *fp;
+    int ch;
+    if ((fp = fopen(file, "wb")) != NULL) {
+        while ((ch = fputc(*str, fp)) != '\0') {
+            if (ch == EOF)
+                return -1;
+            str++;
+
+        }
+
+    }
+    fclose(fp);
+    return 0;
+}
+
 int main(int argc, char *argv[]) {
     //课后练习题目12:
     //FILE *fp = fopen("/Users/yongshi/Downloads/MyCode/C_Programming/22 IO/cases/fopen.txt", "rb");
@@ -177,15 +229,28 @@ int main(int argc, char *argv[]) {
  */
 
     //课后练习题13:
-    const char *filename = "22 IO/exerices//open.txt";
-    int lineNumber = 3;
-    int length = line_length(filename, lineNumber);
-    if (length > 0)
-        printf("Length of line %d: %d\n", lineNumber, length);
+    const char *filename = "22 IO/exerices/open.txt";
+//    int lineNumber = 3;
+//    int length = line_length(filename, lineNumber);
+//    if (length > 0)
+//        printf("Length of line %d: %d\n", lineNumber, length);
+//    else
+//        printf("Line %d doesn't exist or there was an error.\n", lineNumber);
+
+    //  课后练习题14；
+//    char str[1024];
+//    char *result;
+//    if ((result = myFgets(str, sizeof(str), filename)) != NULL)
+//        printf("%s", result);
+//    else
+//        printf("Error call Myfgets.");
+
+    const char *str="[\"walmart_us_cnpb\", \"amazon_us_mec\", \"amazon_us_voco\"]";
+
+    if ( MyFputs(str,filename) == 0)
+        printf("String written successfully.\n");
     else
-        printf("Line %d doesn't exist or there was an error.\n", lineNumber);
-
-
+        printf("Error writing string to the file.\n");
 
     //test_exec01_03();
     //test_exec06_08();
@@ -197,23 +262,23 @@ int main(int argc, char *argv[]) {
     the missing error check to the program, assuming that we want it to display a
     message and terminate immediately if an error occurs.
     */
-    FILE *source_fp, *dest_fp;
-    int ch;
-    if (argc != 3) {
-        fprintf(stderr, "usage: fcopy source dest.\n");
-        exit(EXIT_FAILURE);
-    }
+//    FILE *source_fp, *dest_fp;
+//    int ch;
+//    if (argc != 3) {
+//        fprintf(stderr, "usage: fcopy source dest.\n");
+//        exit(EXIT_FAILURE);
+//    }
     //这里采用rb和wb作为文件模式，使fcopy程序既可以复制文本文件也可以复制二进制文件，如果
     //采用r和w来代替，那么程序将无法复制二进制文件。
-    if ((source_fp = fopen(argv[1], "rb")) == NULL) {
-        fprintf(stderr, "Can't open %s\n", argv[1]);
-        exit(EXIT_FAILURE);
-    }
-    if ((dest_fp = fopen(argv[2], "wb")) == NULL) {
-        fprintf(stderr, "Can't open %s\n", argv[2]);
-        fclose(source_fp);
-        exit(EXIT_FAILURE);
-    }
+//    if ((source_fp = fopen(argv[1], "rb")) == NULL) {
+//        fprintf(stderr, "Can't open %s\n", argv[1]);
+//        exit(EXIT_FAILURE);
+//    }
+//    if ((dest_fp = fopen(argv[2], "wb")) == NULL) {
+//        fprintf(stderr, "Can't open %s\n", argv[2]);
+//        fclose(source_fp);
+//        exit(EXIT_FAILURE);
+//    }
     /*
      * Exercise 22.11:
      *  下面出现了这个循环：
@@ -229,16 +294,16 @@ int main(int argc, char *argv[]) {
 
      */
 
-    while ((ch = getc(source_fp)) != EOF) {
-        //判断写入的过程中是否出现异常，比如磁盘可能会满
-        if (putc(ch, dest_fp) == EOF) {
-            printf(stderr, "Error: writing to file failed.\n");
-            exit(EXIT_FAILURE);
-        }
-
-    }
-    fclose(source_fp);
-    fclose(dest_fp);
+//    while ((ch = getc(source_fp)) != EOF) {
+//        //判断写入的过程中是否出现异常，比如磁盘可能会满
+//        if (putc(ch, dest_fp) == EOF) {
+//            printf(stderr, "Error: writing to file failed.\n");
+//            exit(EXIT_FAILURE);
+//        }
+//
+//    }
+//    fclose(source_fp);
+//    fclose(dest_fp);
 
 
     return 0;
