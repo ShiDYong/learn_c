@@ -98,7 +98,7 @@ int count_periods(const char *fileName) {
 int line_length(const char *filename, int n) {
     //方法一：通过一次读取一行的函数计算
     FILE *fp;
-    /* char buffer[1024];
+   /*  char buffer[1024];
      int currentLine = 1;
      if ((fp = fopen(filename, "r")) != NULL) {
          //先把小于指定的行的行号跳过
@@ -177,7 +177,7 @@ int main(int argc, char *argv[]) {
  */
 
     //课后练习题13:
-    const char *filename = "22 IO/exerices//open.txt";
+    const char *filename = "22 IO/exerices/open.txt";
     int lineNumber = 3;
     int length = line_length(filename, lineNumber);
     if (length > 0)
