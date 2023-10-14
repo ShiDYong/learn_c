@@ -165,6 +165,58 @@ int line_length(const char *filename, int n) {
 }
 
 
+/*
+ * Exercises 22.14
+ * (a) Write your own version of the `fgets` function. Make it behave as much like
+    the real `fgets` function as possible; in particular, make sure that it has the
+    proper return value. To avoid conflicts with the standard library, don't name
+    your function `fgets`.
+ */
+char *myFgets(char *str, int n, FILE *file) {
+    FILE *fp;
+    int c, len = 0;
+    if ((fp = fopen(file, "r")) != NULL) {
+        while (len < n - 1) {
+            c = fgetc(fp);
+            if (c == EOF || c == NULL) {
+                if (len == 0 || ferror(stderr))
+                    return NULL;
+                break;
+            }
+            str[len++] = c;
+            if (c == '\n') //是换行符\n
+                break;
+        }
+    }
+
+    str[len] = '\0'; //字符串是以空字符结尾的'\0';
+    fclose(fp);
+    return str;
+
+}
+
+
+/*
+ * Exercises: 22.14.b
+ * (b) Write your own version of `fputs`, following the same rules as in part (a).
+ *
+ */
+int MyFputs(const char *str, FILE *file) {
+    FILE *fp;
+    int ch;
+    if ((fp = fopen(file, "wb")) != NULL) {
+        while ((ch = fputc(*str, fp)) != '\0') {
+            if (ch == EOF)
+                return -1;
+            str++;
+
+        }
+
+    }
+    fclose(fp);
+    return 0;
+}
+
 int main(int argc, char *argv[]) {
     //课后练习题目12:
     //FILE *fp = fopen("/Users/yongshi/Downloads/MyCode/C_Programming/22 IO/cases/fopen.txt", "rb");

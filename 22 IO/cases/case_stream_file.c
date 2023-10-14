@@ -60,8 +60,8 @@ int main(int argc, char *argv[]) {
     //test_buffering();
     //single_character_output();
     //single_character_input();
-    //line_output_input();
-    block_output_input();
+    line_output_input();
+    //block_output_input();
     return 0;
 }
 
@@ -351,7 +351,7 @@ void line_output_input() {
     //It does not automatically append a newline character ('\n') to the output,
     // so if you want to start a new line, you need to include the newline character in the string explicitly.
     //It returns a non-negative value (typically 0) if successful, or EOF (an integer constant representing end-of-file) if an error occurs.
-    FILE *file = fopen("22 IO/cases/fopen.txt", "w");
+    FILE *file = fopen("../cases/fopen.txt", "wb");
     if (file != NULL) {
         const char *str = "Hello World1";
         if (fputs(str, file) != NULL)

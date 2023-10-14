@@ -46,7 +46,7 @@ void test_get_position() {
         exit(EXIT_FAILURE);
     }
     // Get the current file position
-    printf("Current file position: %11lld\n", (long long) position);
+    printf("Current file position: %11lld\n",  position);
     fclose(file); // Close the file
     // Perform some operations here that may change the file position
     /*
