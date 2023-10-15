@@ -7,8 +7,7 @@
 #include<stdio.h>
 #include <stdlib.h>
 
-void test_exec01_03();
-
+static FILE *get_position(FILE *fp, fpos_t *position);
 
 void test_exec04_05() {
     //课后练习04:如果printf函数用%#012.5g作为转换函数说明来执行显示操作，请指出下列数字显示的形式
@@ -98,32 +97,32 @@ int count_periods(const char *fileName) {
 int line_length(const char *filename, int n) {
     //方法一：通过一次读取一行的函数计算
     FILE *fp;
-   /*  char buffer[1024];
-     int currentLine = 1;
-     if ((fp = fopen(filename, "r")) != NULL) {
-         //先把小于指定的行的行号跳过
-         while (currentLine < n) {
-             //要找到该行不存在
-             if (fgets(buffer, sizeof(buffer), fp) == NULL) {
-                 //Reached the end of the line before reaching the desired line
-                 fclose(fp);
-                 return 0;
-             }
-             currentLine++;
-         }
-         if (fgets(buffer, sizeof(buffer), fp) != NULL) {//指定行数读取
-             //Calculate the length of the line
-             int length = 0;
-             for (int i = 0; buffer[i] != '\0' && buffer[i] != '\n'; i++)
-                 length++;
-             fclose(fp);
-             return length;
-         }
-         //If fgets returns NULL,it means we reached the end of the file
-         fclose(fp);
-         return 0;
-     } else
-         return 0;//打开文件失败*/
+    /*  char buffer[1024];
+      int currentLine = 1;
+      if ((fp = fopen(filename, "r")) != NULL) {
+          //先把小于指定的行的行号跳过
+          while (currentLine < n) {
+              //要找到该行不存在
+              if (fgets(buffer, sizeof(buffer), fp) == NULL) {
+                  //Reached the end of the line before reaching the desired line
+                  fclose(fp);
+                  return 0;
+              }
+              currentLine++;
+          }
+          if (fgets(buffer, sizeof(buffer), fp) != NULL) {//指定行数读取
+              //Calculate the length of the line
+              int length = 0;
+              for (int i = 0; buffer[i] != '\0' && buffer[i] != '\n'; i++)
+                  length++;
+              fclose(fp);
+              return length;
+          }
+          //If fgets returns NULL,it means we reached the end of the file
+          fclose(fp);
+          return 0;
+      } else
+          return 0;//打开文件失败*/
 
     //方法二：通过单个字符读取,写法更加简洁
     int length = 0;
@@ -171,8 +170,11 @@ int line_length(const char *filename, int n) {
     the real `fgets` function as possible; in particular, make sure that it has the
     proper return value. To avoid conflicts with the standard library, don't name
     your function `fgets`.
+    “restrict”关键字主要用在函数参数中，指示在该函数内的受限指针的生命周期内，
+    不能通过任何其他指针访问所指向的内存（通过受限指针）。
+    这允许编译器进行某些优化并假设不存在别名问题，从而可能产生更高效的代码。
  */
-char *myFgets(char *str, int n, FILE *file) {
+char *myFgets(char *restrict str, int n, FILE *restrict file) {
     FILE *fp;
     int c, len = 0;
     if ((fp = fopen(file, "r")) != NULL) {
@@ -195,27 +197,206 @@ char *myFgets(char *str, int n, FILE *file) {
 
 }
 
-
 /*
- * Exercises: 22.14.b
- * (b) Write your own version of `fputs`, following the same rules as in part (a).
- *
+ * 实现的方法二:按照行读取数据，每行读取多少个字符
+ * fgets函数的主要功能是从任意的流中逐个读取字符，并且把它们存储在s所指向的字符数组中，
+ * 直到它读到换行符或者第n个字符时停止。因此可以使用fgetc函数对其封装，封装过程中需要注意
+ * 判断换行符和读取字符数量为n两个限制条件
  */
-int MyFputs(const char *str, FILE *file) {
-    FILE *fp;
-    int ch;
-    if ((fp = fopen(file, "wb")) != NULL) {
-        while ((ch = fputc(*str, fp)) != '\0') {
-            if (ch == EOF)
-                return -1;
-            str++;
-
-        }
+char *myfgets(char *restrict str, int n, FILE *restrict stream) {
+    char ch;
+    if (str == NULL || stream == NULL) return NULL;
+    for (int i = 0; i < n; ++i) {
+        ch = fgetc(stream);
+        if (ch != '\n') *(str + i) = ch; //充分利用指针特性
+        else break;
 
     }
-    fclose(fp);
-    return 0;
+    return str;
+
+
 }
+
+/*
+ * fputs其主要功能向输出流写入字符串s，因此可以使用fputc函数进行封装
+ */
+int myfputs(char *restrict s, FILE *restrict stream) {
+    int i = 0;
+    if (s == NULL || stream == NULL) return EOF;
+    while (*(s + i) != '\0') fputc(*(s + (i++)), stream); //要理解这种简洁的写法
+    return i;
+}
+
+
+/*
+ * Exercises: 22.15:
+ * 编写记录fseek函数来在二进制文件中执行下列文件中定位操作，其中，二进制文件的数据以64字节“记录”的形式进行排列。
+ * 采用fp作为下列每种情况中的文件指示。
+ * a.移动到记录n的开始处(假设文件中的首记录为记录0)。
+ * b.移动到文件中最后一条记录的开始处。
+ * c.向前移动一条记录。
+ * d.向后移动一条记录.
+ */
+void test_fseek_fcn(FILE *fp) {
+    /*
+     * 通常情况下在C语言程序中使用fopen函数打开文件时，系统会自动将文件位置设置为在文件的起始处，在执行读或写的操作时，文件位置会自动
+     * 推进，并且允许按照顺序贯穿整个文件。当需要在文件中跳过某些数据直接寻找目标位置时，则需要使用fseek函数；
+     * int fseek(FILE * stream, long int offset, int whence);
+     * fseek函数用于改变与第一个参数(即文件指针)相关的文件位置。第二个参数说明新位置时根据文件的起始处、当前位置还是文件末尾来计算。第三个
+     * 参数表示文件位置。例如：SEEK_SET表示文件的起始处，SEEK_CUR表示文件的当前位置，SEEK_END表示文件的末尾处。
+     * fseek ( fp, 0L,SEEK_SET); 定位到文件开始处。
+       fseek ( fp,+10L,SEEK_CUR);定位在当前位置的后10个字节处。
+     　fseek (fp,-10L,SEEK_END);定位在文件末尾，然后向前移动10个字节处。
+     */
+    fpos_t position;
+
+    int record_size = 64L;
+    int n = 3;//移动到记录为3的开始处
+    get_position(fp, &position);
+    printf("没有开始移动前文件的位置：%11lld\n", position);
+
+    //a.移动到记录n的开始处(假设文件中的首记录为记录0)。
+    fseek(fp, n * record_size, SEEK_SET);
+    get_position(fp, &position);
+    printf("移动到记录n的开始处后的位置：%11lld\n", position);
+    //b.移动到文件中最后一条记录的开始处
+    fseek(fp, record_size, SEEK_END);
+    get_position(fp, &position);
+    printf("移动到文件中最后一条记录的开始处：%11lld\n", position);
+    //c.向前移动一条记录。
+    fseek(fp, -record_size, SEEK_CUR);
+    get_position(fp, &position);
+    printf("向前移动一条记录后的位置：%11lld\n", position);
+    //d.向后移动两条记录.
+    fseek(fp, 2 * record_size, SEEK_CUR);
+    get_position(fp, &position);
+    printf("向后移动一条记录后的位置：%11lld\n", position);
+
+
+}
+
+
+static FILE *get_position(FILE *fp, fpos_t *ptr) {
+    if (fp == NULL) return NULL;
+    if (fgetpos(fp, ptr) != 0) {
+        perror("Error getting file position");
+        fclose(fp);
+        exit(EXIT_FAILURE);
+    }
+    return fp;
+
+}
+
+/*
+ * 获取文件最后一行的内容并返回来
+ * 1.打开文件并将其指针移动到文件的末尾。
+ * 2.向前遍历文件内容，直到找到最后一个换行符('\n').
+ * 3.从最后一个换行符的位置开始，读取直到文件末尾，即最后一行
+ */
+char *find_last_line(FILE *restrict file) {
+    FILE *fp;
+    char ch;
+    long file_size;
+    //另外加的获取位置，方便进行调试
+    fpos_t position;
+
+    //打开文件
+    if ((fp = fopen(file, "r")) == NULL) {
+        perror("Open file failed.\n");
+        return NULL;
+    }
+    //将文件指针移动到文件的末尾，并获取文件大小
+    fseek(fp, 0, SEEK_END);
+    get_position(fp, &position);
+    printf("获取文件文件指针挪动到文件末尾的时文件的位置：%11lld\n", position);
+    if ((file_size = ftell(fp)) == -1) {
+        perror("ftell");
+        fclose(fp);
+        return NULL;
+    }
+    //开始从文件末尾向前查最后一个换行符
+    long pos = file_size - 1;
+    while (pos >= 0) {
+        fseek(fp, pos, SEEK_SET);
+        get_position(fp, &position);
+        printf("查找最后一个换行符的时文件指针的变化：%11lld\n", position);
+        ch = fgetc(fp);//每调用一次，文件位置就自增1
+        get_position(fp, &position);
+        printf("fgetc方法之后完后文件位置：%11lld\n", position);
+        if (ch == '\n')
+            break;//找到最后一个换行符
+        pos--;
+    }
+    //读取最后一行
+//    fseek(fp, pos + 1, SEEK_SET);
+//    while (1) {
+//        ch = fgetc(fp);
+//        if (ch == EOF)
+//            break;
+//        *(str++) = ch;//保存返回的
+//        putchar(ch);//直接输出来的
+//
+//    }
+    if (pos >= 0) {
+        long line_size = file_size - pos - 1;
+        //利用动态分配内存
+        char *last_line = (char *) malloc(line_size + 1);
+        if (last_line == NULL) {
+            perror("Allocation memory failed.\n");
+            fclose(fp);
+            return NULL;
+        }
+        fseek(fp, pos + 1, SEEK_SET);
+        //利用块读取，提高效率
+        fread(last_line, 1, line_size, fp);
+        last_line[line_size] = '\0';
+        return last_line;
+    } else
+        printf("文件为空或没有换行符号.\n");
+    fclose(fp);
+
+
+}
+
+/*
+ * 通过行读取，提高性能
+ */
+char *get_last_line(FILE *restrict file) {
+    FILE *fp;
+    char *last_line = NULL;
+    char *current_line = NULL;
+    size_t len = 0;//len is the length of the allocated buffer.
+    ssize_t read; //read stores the return value of getline.
+
+
+    //打开文件
+    if ((fp = fopen(file, "r")) == NULL) {
+        perror("Open file failed.\n");
+        return NULL;
+    }
+    // 逐行读取文件
+    //C 中的 getline 函数用于从文件流或标准输入中读取文本行。 它动态分配内存来存储行并根据需要调整缓冲区大小。
+    // 当您事先不知道行的长度时，这尤其有用。
+    while ((read = getline(&current_line, &len, fp)) != -1) {
+        if (last_line != NULL) {
+            free(last_line);  // 释放之前的行
+        }
+        last_line = current_line;
+        current_line = NULL;
+    }
+    // 如果成功读取了最后一行，将其输出
+    if (last_line != NULL) {
+        printf("最后一行: %s", last_line);
+        return last_line;
+    } else {
+        printf("文件为空或读取失败\n");
+    }
+    free(last_line);
+    free(current_line);
+    // 关闭文件
+    fclose(fp);
+}
+
 
 int main(int argc, char *argv[]) {
     //课后练习题目12:
@@ -230,14 +411,36 @@ int main(int argc, char *argv[]) {
 
     //课后练习题13:
     const char *filename = "22 IO/exerices/open.txt";
-    int lineNumber = 3;
-    int length = line_length(filename, lineNumber);
-    if (length > 0)
-        printf("Length of line %d: %d\n", lineNumber, length);
+    //int lineNumber = 3;
+    //int length = line_length(filename, lineNumber);
+//    if (length > 0)
+//        printf("Length of line %d: %d\n", lineNumber, length);
+//    else
+//        printf("Line %d doesn't exist or there was an error.\n", lineNumber);
+
+    //获取文件最后一行
+    //char *str[1024];使用动态分配内存
+    char *str;
+    if ((str = get_last_line(filename)) != NULL)
+        printf("Last line content: %s\n", str);
     else
-        printf("Line %d doesn't exist or there was an error.\n", lineNumber);
+        printf("Operation failed.\n");
 
-
+    //课后练习题14
+//    FILE *fp;
+//    char *str[1024];
+//    int n = 64;
+//    if ((fp = fopen("22 IO/exerices/open.txt", "r")) != NULL) {
+//        myfgets(str, n, fp);
+//        printf("read data is: %s\n", str);
+//    } else
+//        printf("Open file failed.\n");
+//    char *str = "Hello world today!";
+//    if ((fp = fopen("22 IO/exerices/open.txt", "r")) != NULL) {
+//        // printf("Read number of characters are : %d\n", myfputs(str, fp));
+//        test_fseek_fcn(fp);
+//    } else
+//        printf("Open file failed.\n");
 
     //test_exec01_03();
     //test_exec06_08();
@@ -261,7 +464,7 @@ int main(int argc, char *argv[]) {
         fprintf(stderr, "Can't open %s\n", argv[1]);
         exit(EXIT_FAILURE);
     }
-    if ((dest_fp = fopen(argv[2], "wb")) == NULL) {
+    if ((dest_fp = fopen(argv[2], "w+")) == NULL) {
         fprintf(stderr, "Can't open %s\n", argv[2]);
         fclose(source_fp);
         exit(EXIT_FAILURE);
@@ -295,3 +498,4 @@ int main(int argc, char *argv[]) {
 
     return 0;
 }
+

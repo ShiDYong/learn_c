@@ -1,14 +1,10 @@
-<<<<<<< HEAD
-/Users/yongshi/Downloads/Tools/JetBrains/ToolBox/apps/CLion/ch-0/232.8660.186/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/Users/yongshi/Downloads/Tools/JetBrains/ToolBox/apps/CLion/ch-0/232.8660.186/CLion.app/Contents/bin/ninja/mac/ninja -G Ninja -S /Users/yongshi/Downloads/MyCode/C_Programming -B /Users/yongshi/Downloads/MyCode/C_Programming/cmake-build-debug
-=======
-/usr/local/clion-2022.3.3/bin/cmake/linux/x64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" -S /export/c_project/learn_c -B /export/c_project/learn_c/cmake-build-debug
--- The C compiler identification is GNU 9.4.0
+/Users/yongshi/Downloads/Tools/JetBrains/ToolBox/apps/CLion/ch-0/232.9921.42/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/Users/yongshi/Downloads/Tools/JetBrains/ToolBox/apps/CLion/ch-0/232.9921.42/CLion.app/Contents/bin/ninja/mac/ninja -G Ninja -S /Users/yongshi/Downloads/MyCode/C_Programming -B /Users/yongshi/Downloads/MyCode/C_Programming/cmake-build-debug
+-- The C compiler identification is AppleClang 14.0.0.14000029
 -- Detecting C compiler ABI info
 -- Detecting C compiler ABI info - done
--- Check for working C compiler: /usr/bin/cc - skipped
+-- Check for working C compiler: /Library/Developer/CommandLineTools/usr/bin/cc - skipped
 -- Detecting C compile features
 -- Detecting C compile features - done
->>>>>>> 537bb88c9774adb2cbd1bfab06ffa7dacb2e0ad9
 CMake Error at CMakeLists.txt:6 (add_subdirectory):
   add_subdirectory given source "02C" which is not an existing directory.
 
@@ -58,4 +54,3 @@ CMake Error at CMakeLists.txt:25 (add_subdirectory):
 
 
 -- Configuring incomplete, errors occurred!
-See also "/export/c_project/learn_c/cmake-build-debug/CMakeFiles/CMakeOutput.log".
