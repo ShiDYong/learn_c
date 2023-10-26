@@ -206,7 +206,7 @@ char *myFgets(char *restrict str, int n, FILE *restrict file) {
 char *myfgets(char *restrict str, int n, FILE *restrict stream) {
     char ch;
     if (str == NULL || stream == NULL) return NULL;
-    for (int i = 0; i < n; ++i) {
+    for (int i = 0; i < n; i++) {
         ch = fgetc(stream);
         if (ch != '\n') *(str + i) = ch; //充分利用指针特性
         else break;
@@ -367,7 +367,6 @@ char *get_last_line(FILE *restrict file) {
     char *current_line = NULL;
     size_t len = 0;//len is the length of the allocated buffer.
     ssize_t read; //read stores the return value of getline.
-
 
     //打开文件
     if ((fp = fopen(file, "r")) == NULL) {
