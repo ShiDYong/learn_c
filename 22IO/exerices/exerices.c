@@ -206,7 +206,7 @@ char *myFgets(char *restrict str, int n, FILE *restrict file) {
 char *myfgets(char *restrict str, int n, FILE *restrict stream) {
     char ch;
     if (str == NULL || stream == NULL) return NULL;
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n; ++i) {
         ch = fgetc(stream);
         if (ch != '\n') *(str + i) = ch; //充分利用指针特性
         else break;

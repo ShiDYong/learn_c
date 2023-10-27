@@ -37,7 +37,7 @@ void block_output_input();
  */
 int main(int argc, char *argv[]) {
     // file_operation();
-    test_freopen();
+    // test_freopen();
     //  FILE *fp;
     // argc is the count of command-line arguments
     // argv is an array of strings containing the arguments
@@ -60,7 +60,7 @@ int main(int argc, char *argv[]) {
     //test_buffering();
     //single_character_output();
     //single_character_input();
-    // line_output_input();
+    line_output_input();
     //block_output_input();
     return 0;
 }
