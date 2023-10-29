@@ -368,7 +368,6 @@ char *get_last_line(FILE *restrict file) {
     size_t len = 0;//len is the length of the allocated buffer.
     ssize_t read; //read stores the return value of getline.
 
-
     //打开文件
     if ((fp = fopen(file, "r")) == NULL) {
         perror("Open file failed.\n");

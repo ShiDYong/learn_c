@@ -1,4 +1,58 @@
+<<<<<<< HEAD
 /Users/yongshi/Downloads/Tools/JetBrains/ToolBox/apps/CLion/ch-0/232.8660.186/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/Users/yongshi/Downloads/Tools/JetBrains/ToolBox/apps/CLion/ch-0/232.8660.186/CLion.app/Contents/bin/ninja/mac/ninja -G Ninja -S /Users/yongshi/Downloads/MyCode/C_Programming -B /Users/yongshi/Downloads/MyCode/C_Programming/cmake-build-debug
 -- Configuring done (0.1s)
 -- Generating done (0.0s)
 -- Build files have been written to: /Users/yongshi/Downloads/MyCode/C_Programming/cmake-build-debug
+=======
+/usr/local/clion-2022.3.3/bin/cmake/linux/x64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" -S /export/c_project/learn_c -B /export/c_project/learn_c/cmake-build-debug
+CMake Error at CMakeLists.txt:6 (add_subdirectory):
+  add_subdirectory given source "02C" which is not an existing directory.
+
+
+CMake Error at CMakeLists.txt:7 (add_subdirectory):
+  add_subdirectory called with incorrect number of arguments
+
+
+CMake Error at CMakeLists.txt:9 (add_subdirectory):
+  add_subdirectory given source "05Selection" which is not an existing
+  directory.
+
+
+CMake Error at CMakeLists.txt:11 (add_subdirectory):
+  add_subdirectory given source "07Basic" which is not an existing directory.
+
+
+CMake Error at CMakeLists.txt:14 (add_subdirectory):
+  add_subdirectory given source "10Program" which is not an existing
+  directory.
+
+
+CMake Error at CMakeLists.txt:16 (add_subdirectory):
+  add_subdirectory called with incorrect number of arguments
+
+
+CMake Error at CMakeLists.txt:19 (add_subdirectory):
+  add_subdirectory called with incorrect number of arguments
+
+
+CMake Error at CMakeLists.txt:20 (add_subdirectory):
+  add_subdirectory called with incorrect number of arguments
+
+
+CMake Error at CMakeLists.txt:21 (add_subdirectory):
+  add_subdirectory given source "17Advanced" which is not an existing
+  directory.
+
+
+CMake Error at CMakeLists.txt:24 (add_subdirectory):
+  add_subdirectory given source "20Low-level" which is not an existing
+  directory.
+
+
+CMake Error at CMakeLists.txt:25 (add_subdirectory):
+  add_subdirectory given source "22" which is not an existing directory.
+
+
+-- Configuring incomplete, errors occurred!
+See also "/export/c_project/learn_c/cmake-build-debug/CMakeFiles/CMakeOutput.log".
+>>>>>>> 9d95f00924d9979fb9e548dc457c79d1dc95d1f4
