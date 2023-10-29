@@ -1,0 +1,142 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1
+					],
+					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.14"
+					},
+					"projectIndex" : 0,
+					"source" : "."
+				},
+				{
+					"build" : "22IO",
+					"childIndexes" : 
+					[
+						2,
+						3,
+						4
+					],
+					"jsonFile" : "directory-22IO-Debug-3998f76e4daacd6ce471.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.14"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "22IO"
+				},
+				{
+					"build" : "22IO/cases",
+					"jsonFile" : "directory-22IO.cases-Debug-eb9e5ae9a523fe907a76.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.14"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 0,
+					"source" : "22IO/cases",
+					"targetIndexes" : 
+					[
+						0
+					]
+				},
+				{
+					"build" : "22IO/exerices",
+					"jsonFile" : "directory-22IO.exerices-Debug-6e1f21ceb2e899dc9ca5.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.14"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 0,
+					"source" : "22IO/exerices",
+					"targetIndexes" : 
+					[
+						1
+					]
+				},
+				{
+					"build" : "22IO/programming",
+					"jsonFile" : "directory-22IO.programming-Debug-fba4456073efc387a1fd.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.14"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 0,
+					"source" : "22IO/programming",
+					"targetIndexes" : 
+					[
+						2
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4
+					],
+					"name" : "C_Programming",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 2,
+					"id" : "IO_cases::@74ec41cb8fa827d8869f",
+					"jsonFile" : "target-IO_cases-Debug-e78b6a634c0dfa072102.json",
+					"name" : "IO_cases",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "IO_exerices::@d12f6fc6587108466341",
+					"jsonFile" : "target-IO_exerices-Debug-9a9bf63a3c0e71a62015.json",
+					"name" : "IO_exerices",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 4,
+					"id" : "pro_exer::@4967555693669bbde2b9",
+					"jsonFile" : "target-pro_exer-Debug-cfa76a6fe3e58e3ddfdc.json",
+					"name" : "pro_exer",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/Users/yongshi/Downloads/MyCode/C_Programming/cmake-build-debug",
+		"source" : "/Users/yongshi/Downloads/MyCode/C_Programming"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 5
+	}
+}

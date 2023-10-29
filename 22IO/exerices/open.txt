@@ -1,5 +1,1 @@
-(a) Move to the beginning of record `n` (Assume that the first record in the
-file is record 0).  
-(b) Move to the beginning of the last record in the file.  
-(c) Move forward one record.  
-(d) Move backward two records.
+(d) Move back899897rd two reIPOUCords.
