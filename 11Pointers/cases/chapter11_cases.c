@@ -6,7 +6,7 @@ Created by mason on 2023/7/2
  */
 #include<stdio.h>
 
-#define N 10
+#define N 5
 
 void case01_Pointer_variables();
 
@@ -17,27 +17,33 @@ void case04_pointer_as_argument();
 void decompose(double x, long *int_part, double *frac_part);
 
 void max_min(int a[], int n, int *max, int *min);
+
 int *max(int *a, int *b);
 
-//int main(void) {
-//    //case01_Pointer_variables();
-//    // case03_pointer_assignment();
-//    // case04_pointer_as_argument();
-//    //指针作为参数传递的运用案例
-//    int b[N], i, big, small;
-//    printf("Enter %d number: ", N);
-//    for (i = 0; i < N; i++)
-//        scanf("%d", &b[i]);
-//    max_min(b, N, &big, &small);
-//    printf("Largest: %d\n", big);
-//    printf("Smallest: %d\n", small);
-//
-//    //指针作为返回的案例练习;调用max函数时，用指向两个int类型变量的指针作为参数，并且把结果存储在一个指针变量中
-//    //
-//    int *p,n=23,m=45;
-//    p= max(&n,&m);
-//    return 0;
-//}
+int main(void) {
+    //case01_Pointer_variables();
+    //case03_pointer_assignment();
+    // case04_pointer_as_argument();
+    //指针作为参数传递的运用案例
+    //    int b[N], i, big, small;
+    //    printf("Enter %d number: ", N);
+    //    for (i = 0; i < N; i++)
+    //        scanf("%d", &b[i]);
+    //    max_min(b, N, &big, &small);
+    //    printf("Largest: %d\n", big);
+    //    printf("Smallest: %d\n", small);
+
+    //指针作为返回的案例练习;调用max函数时，用指向两个int类型变量的指针作为参数，并且把结果存储在一个指针变量中
+    //
+    //     int *p,n=23,m=45;
+    //     p= max(&n,&m);
+    //    printf("整数a和b中最大的数：%d\n",*p);
+
+
+
+
+    return 0;
+}
 
 /**
  * 11.1节：内存地址及其指针变量的关系：
@@ -49,10 +55,12 @@ int *max(int *a, int *b);
  *      出处。虽然用数表示地址，但是地址的取值范围可能不同于整数的范围，所以一定不能用普通整型变量存储地址。但是可以用特殊的指针
  *      变量(pointer variable)存储地址。在用指针变量p存储变量i的地址时，我们说p指向i。换句话说，指针就是地址，而指针变量就是
  *      存储地址的变量。
+ *      指针的值：表示某个对象的内存地址
+ *      指针的类型：表示那个位置上所存储对象的类型
  */
 void case01_Pointer_variables() {
     //1.指针变量的声明：指针变量名字前放置星号；
-//    int *p;  //说明p是指向int类型对象的指针变量。C语言要求每个指针变量只能指向一种特定类型(引用类型)的对象,至于引用类型
+    //int *p;  //说明p是指向int类型对象的指针变量。C语言要求每个指针变量只能指向一种特定类型(引用类型)的对象,至于引用类型
     //是什么类型则没有限制，事实上，指针变量甚至可以指向另一个指针，即是指向指针的指针。
 
     /*2.取地址运算符和间接寻址运算符：
@@ -60,16 +68,16 @@ void case01_Pointer_variables() {
      * 在内存中的地址。为了获得对指针所指向对象的访问，可以使用*(间接寻址)运算符。如果p是指针，那么*p表示p当前指向的对象。
      * */
     //2.1取地址运算符：在使用前初始化p是至关重要的。一种初始化指针变量的方法是使用&运算符把某个变量的地址赋给它或者更长采用左值
-//    int i, *q;
-//    q = &i;
+    //  int i, *q;
+    // q = &i;
     //可以进一步合并，把i的声明和q的声明合并，但是需要首先声明i
     // int i, *p = &i;
 
     //2.2间接寻址运算符:一旦指针变量指向了对象，就可以使用*运算符访问存储在对象中的内容。如下：
     // printf("%d\n", *p); //⚠️这里打印出来显示的i的值，而不是i的地址
     //2.2.1:对变量使用&运算符产生指向变量的指针，而对指针使用*运算符则可以返回到原始变量：
-//    int j;
-//    j = *&i;/*same as j =i;*/
+    //int j;
+    // j = *&i;/*same as j =i;*/
     //只要p指向i，*p就是i的别名。*p不仅拥有和i相同的值，而且对*p的改变也会改变i的值.(*p是坐值，所以对它赋值是合法的)
     int i, *p = &i;
     i = 1;
@@ -78,16 +86,17 @@ void case01_Pointer_variables() {
     *p = 2;
     printf("%d\n", i);
     printf("%d\n", *p);
+    printf(" %p\n", &i); // 0x16b9ded1c
+    printf(" %p\n", p); // 0x16b9ded1c
+
     //2.3:⚠️不要把间接寻址运算符用于未初始化的指针变量。如果指针变量p没有初始化，那么试图使用p的值会导致未定义的行为：
-    int *q;
-    printf("%d", *q);   /*WRONG*/
+    // int *q ;
+    // printf("%d", *q);   /*WRONG*/
     //多次执行有以下输出：12648448、70418432、69648384、48168960
     // ⚠️：给*q赋值尤其危险。如果q恰好具有有效的内存地址，下面的赋值会试图修改存储在该地方的数据:
     // *q = 1; /*WRONG，运行出现：EXC_BAD_ACCESS (code=2, address=0x1027ec100)*/
     //如果上述赋值改变的内存单元属于该程序，那么可能会导致出乎意料的行为；如果改变的内存单元属于操作系统，那么
     //很可能会导致系统崩溃。编译器可能会给出警告信息，告知q为初始化。
-
-
 
 }
 
@@ -113,26 +122,42 @@ void case03_pointer_assignment() {
     printf("q = %p\n", q);
     //任意数量的指针变量都可以指向同一个对象,注意区分q=p和*q=*p
     //q=q是指针赋值，而赋值语句*q=*p是把p指向的值(i的值)复制到q指向的对象(变量j)中
-    int n, m;
-    p = &n;
-    q = &m;
-    n = 1;
-    //  p= q;指针赋值
-    *q = *p;
+    int n = 2, m = 1, *ptr_1 = &n, *ptr_2=&m;
+    *ptr_1 = *ptr_2;
+    printf(" ptr_1 的值= %p\n", ptr_1); // ptr_1 的值= 0x16f34ed04
+    printf(" ptr_2 的值= %p\n", ptr_2); // ptr_2 的值= 0x16f34ed00
+    printf(" ptr_1 指向对象的值= %d\n", *ptr_1);// ptr_1 指向对象的值= 1
+    printf(" ptr_2 指向对象的值= %d\n", *ptr_2);// ptr_2 指向对象的值= 1
+
 }
 
 /**
- * 11.4指针作为参数：
+ * 11.4指针作为参数的优势：
+   函数的变量副本：
+   在函数调用中，参数可以传递给函数的方式之一是通过创建变量的副本（也称为传值或值传递）。这意味着函数接受参数的是原始值的复制，
+   而不是直接操作原始值。这副本是函数内部的局部变量，与原始数据的变量在内存中具有不同的存储位置。当函数修改参数副本的值时，不会影响到原始数据的值。
+   函数参数的传递方式通常可以分为两种：
+   1.传值（by value）：在这种方式下，函数接收到参数的副本，对这个副本的任何修改都不会影响原始数据。这是C/C++等一些编程语言中默认的参数传递方式。
+   2.引用传递（by reference）：在这种方式下，函数接收到的是原始数据的引用或指针，允许函数修改原始数据的值。这是一些编程语言（如C++中的引用、C#、Java中的对象引用）
+   中提供的参数传递方式。
+   3.特别的说明将指针作为参数，函数将不再复制和传递实际参数的值，而是提供实际参数的地址，即将向主调函数内变量的指针作为参数。函数体内通过指针参数可以实现对实际参数间接寻址
+     对象的存取和访问。
+   以下是关于函数的变量副本的一些关键特点：
+   1.不会影响原始值：当函数接受参数的副本时，对这些副本的任何修改都不会影响原始值。这是因为函数操作的是副本，而不是原始值本身。
+   2.适用于不需要修改原始数据的情况：变量副本的传递适用于那些函数不需要修改原始数据，只需要读取数据的情况。这确保了数据的不可变性。
+   3.安全性：由于原始值不会受到函数调用的影响，这种方式可以提供更高的数据安全性，防止数据被无意或恶意地修改。
+   4.开销较小：传递变量的副本通常比传递指针或引用的方式具有更小的内存和计算开销，因为不涉及在堆栈或堆中创建新的指针对象。
+   5.适用于基本数据类型：值传递通常用于传递基本数据类型，如整数、浮点数、字符等。
  * 通过修改9.3节的decompose函数来作为案例
  */
 void case04_pointer_as_argument() {
     double x = 3.1415;
-    long i;
-    double d;
+    long i=  2.145L;
+    double d=1.34f;
     //调用decompose函数
     decompose(x, &i, &d);
-    printf("直接打印变量i的值= %lld\n", i);
-    printf("直接打印变量d的值= %lf\n", d);
+    printf("修改后的参数i的值 = %ld\n", i);
+    printf("修改后的参数d的值 = %f\n", d);
 
 }
 
@@ -145,8 +170,9 @@ void case04_pointer_as_argument() {
 void decompose(double x, long *int_part, double *frac_part) {
     *int_part = (long) x;
     *frac_part = x - *int_part;
-    printf("通过间接寻址运算符*获取变量i值= %lld\n", *int_part);
-    printf("通过间接寻址运算符*获取变量d值= %lf\n", *frac_part);
+    printf(" int_part指向对象的值= %ld\n",*int_part);
+    printf(" frac_part指向对象的值= %f\n",*frac_part);
+
 
 }
 
@@ -169,8 +195,11 @@ void max_min(int a[], int n, int *max, int *min) {
             *min = a[i];
     }
 
-    /*可以使用单词const来表明函数不会改变指针参数所指向的对象。const应放置在形式参数的声明中，后面紧跟着形式参数的类型说明：*/
-    //void f(const int *p)
+    /*
+     * 通常，当调用函数并且把指向变量的指针作为实际参数传入时，会假设函数将修改实际参数的变量。
+     * 但如果仅仅时为了提高函数调用过程中参数的传递效率，而不是为了修改实际参数的值，可以使用关键字
+     * const来表明函数不会改变指针参数所指向的对象。const应放置在形式参数的声明中，后面紧跟者形式参数的类型说明。
+     //void f(const int *p)
 }
 
 /**

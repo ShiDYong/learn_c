@@ -1,0 +1,2 @@
+add_subdirectory(cases)
+add_subdirectory(exerices)

@@ -23,7 +23,6 @@ int d1 = 480, a1 = 616,
         d7 = 1140, a7 = 1280,
         d8 = 1305, a8 = 1438;
 
-/*
 int main(void) {
     //课后编程练习题01
     int money = 0, twenties, tens, fives, ones;
@@ -62,7 +61,7 @@ int main(void) {
 
     return 0;
 }
-*/
+
 
 
 /**

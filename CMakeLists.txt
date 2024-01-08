@@ -21,4 +21,7 @@ set(CMAKE_C_STANDARD 90)
 #add_subdirectory(18Declarations)
 #add_subdirectory(19Programming)
 #add_subdirectory(20Low-level Programming)
-add_subdirectory(22IO)
+#add_subdirectory(22IO)
+add_subdirectory(24ErrorHandling)
+
+add_subdirectory(26Miscellaneous_Library_Functions)

@@ -17,27 +17,91 @@ void find_two_largest(int a[], int n, int *larges, int *second_largest);
 
 void split_date(int day_of_year, int year, int *month, int *day);
 
+void exec_01_02();
+
 int *find_larges(int a[], int n);
 
-//int main() {
+int main() {
+    exec_01_02();
     //课后练习题题目04:
-//    int i = 3, j = 4;
-//    swap(&i, &j);
-//    printf("i = %d\n", i);
-//    printf("j = %d\n", j);
+    //    int i = 3, j = 4;
+    //    swap(&i, &j);
+    //    printf("i = %d\n", i);
+    //    printf("j = %d\n", j);
     //课后编程练习题06:
-//    int b[N], k, larges, second_largest;
-//    printf("Enter %d numbers: ", N);
-//    for (k = 0; k < N; k++) {
-//        scanf("%d", &b[k]);
-//    }
-//    find_two_largest(b, N, &larges, &second_largest);
-//    printf("Largest is %d\n", larges);
-//    printf("second_largest is %d\n", second_largest);
+    //    int b[N], k, larges, second_largest;
+    //    printf("Enter %d numbers: ", N);
+    //    for (k = 0; k < N; k++) {
+    //        scanf("%d", &b[k]);
+    //    }
+    //    find_two_largest(b, N, &larges, &second_largest);
+    //    printf("Largest is %d\n", larges);
+    //    printf("second_largest is %d\n", second_largest);
 
-//    printf("Max pointer %d\n", *find_larges(b, N));
-//    return 0;
-//}
+    //    printf("Max pointer %d\n", *find_larges(b, N));
+    return 0;
+}
+
+
+/*
+ * 课后练习题01-02
+ */
+void exec_01_02() {
+
+    /*课后练习01：如果i是变量，且p指向i，那么下列哪些表达式是i的别名?*/
+    int i = 1, *p = &i;
+    *p; //表示指针变量p的间接引用，即i
+
+    &p; //表示指针变量p的地址
+    printf(" i的内存地址: %p\n", &i); // i的内存地址 0x16d79acdc
+
+    printf(" 指针变量p的值: %p\n", p); // 指针变量p的值 0x16d79acdc
+
+    printf(" 指针变量p的n内存地址: %p\n", &p); // 指针变量p的n内存地址 0x16d79acd0
+
+    *&p; //表示指针变量p取地址后再间接引用，仍表示指针变量p
+    printf(" *&p的内存地址: %p\n", *&p);// *&p的内存地址: 0x16da2acdc
+    printf(" *&p的值: %d\n", *&p); // *&p的值: 1827106012
+
+    &*p; //表示先对指针变量p间接引用，再取地址，仍表示指针变量p
+    printf("  &*p的内存地址: %p\n", &*p);//   &*p的内存地址: 0x16f75acdc
+    printf("  &*p的值: %d\n", &*p); //   &*p的值: 1869982940
+
+
+    //*i; 编译器检查不通过，表示对变量i的间接引用，如果变量i不能保证是指针变量，则该运算存在一定风险
+
+    &i; //表示对变量i取地址，该值等于指针变量p的值
+    printf(" i的内存地址: %p\n", &i); // i的内存地址 0x16d79acdc
+
+    *&i; //表示对变量i先取地址，再做间接引用运算，仍表示表示i
+    printf(" *&i的内存地址: %d\n", *&i);
+
+
+    // &*i; 编译器不通过，表示对变量i先做间接运算，再取地址，由于变量i不能保证是指针变量，因此该表达式存在一定风险，不能用来表示表示i.
+
+
+
+    /*课后练习题02:
+     * 如果i是int类型变量，且p和q是指向int的指针，那么下列哪些赋值是合法的？
+     *
+     *   p=i;  *p= &i;  &p = q;
+     *   p = &q; p = *&p; p =q;
+     *   p = *q; *p = q; *p = *q;
+     * */
+    int j, *ptr, *qtr;
+
+    //综合考虑赋值表达式，其中i表示int类型变量，&i表示int类型变量的地址，*p、*q表示int类型变量，&q,&q表示int类型指针变量的地址。
+    //合法表达式如下
+    ptr = *&ptr;
+    ptr = qtr;
+    *ptr = *qtr;
+    //其余都是错误的
+
+
+
+
+}
+
 
 /**
  * 课后练习题04:编写下列函数
@@ -62,11 +126,16 @@ void swap(int *p, int *q) {
  * @param sec
  */
 void split_time(long total_sec, int *hr, int *min, int *sec) {
-    *hr = total_sec / 3600;
-    total_sec -= *hr * 3600;
-    *min = total_sec / 60;
-    total_sec -= *min * 60;
-    *sec = total_sec;
+//    *hr = total_sec / 3600;
+//    total_sec -= *hr * 3600;
+//    *min = total_sec / 60;
+//    total_sec -= *min * 60;
+//    *sec = total_sec;
+    *hr = total_sec / 60 / 60;
+    *min = total_sec / 60 - (*hr) * 60;
+    *sec = total_sec % 60;
+
+
 }
 
 
