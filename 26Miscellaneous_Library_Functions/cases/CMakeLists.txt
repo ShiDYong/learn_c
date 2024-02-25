@@ -3,5 +3,5 @@ find_package(OpenSSL REQUIRED)
 include_directories(${OPENSSL_INCLUDE_DIR})
 
 #生成可执行文件
-add_executable(libray_function rand_test.c)
+add_executable(libray_function rand_test.c communication_with_enviraonment.c)
 target_link_libraries(libray_function ${OPENSSL_LIBRARIES})

@@ -1,0 +1,1 @@
+add_executable(chapter15_cases justify.c line.c line.h word.c word.h)

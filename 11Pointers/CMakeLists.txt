@@ -1,4 +1,1 @@
-# 生成可执行文件
-add_subdirectory(cases)
-add_subdirectory(exercises)
-add_subdirectory(program)
+add_executable(chapter11 chapter11_cases.c chapter11_exercises.c chapter11_programming_projects.c)

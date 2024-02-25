@@ -1,0 +1,1 @@
+add_executable(chapter7 chapter7_cases.c chapter7_programming.c chapter7_exercises.c)

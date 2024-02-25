@@ -1,0 +1,1 @@
+add_executable(chapter14 chapter14_cases.c chapter14_exercises.c)

@@ -89,18 +89,18 @@ void generate_secure_random(){
 }
 
 
-int main(int argc, char *argv[]) {
-    /*
-     *rand函数和srand函数结合的方法适用于许多运用程序，但它可能无法为加密目的提供最佳质量的随机性。
-     * 如果您需要加密级别的随机性，则应使用编程环境提供的专用加密库或设施。
-     * */
-    // test_rand_time();
-    //test_rand_sran();
-    //test_rand_fix_value();
-    generate_secure_random();
-
-    return 0;
-
-
-}
+//int main(int argc, char *argv[]) {
+//    /*
+//     *rand函数和srand函数结合的方法适用于许多运用程序，但它可能无法为加密目的提供最佳质量的随机性。
+//     * 如果您需要加密级别的随机性，则应使用编程环境提供的专用加密库或设施。
+//     * */
+//    // test_rand_time();
+//    //test_rand_sran();
+//    //test_rand_fix_value();
+//    generate_secure_random();
+//
+//    return 0;
+//
+//
+//}
 
