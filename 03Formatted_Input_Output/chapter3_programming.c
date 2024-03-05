@@ -6,6 +6,7 @@ Created by mason on 2023/4/31.
 #include <stdio.h>
 #include <stdbool.h>
 #include<ctype.h>
+#include<string.h>
 
 /**
  * 练习1:编写一个程序，以月/日/年(mm/dd/yy)的格式接受用户输入的日志信息，并以年月日(yyyymmdd)的格式展示出来
@@ -146,7 +147,7 @@ void exec3_2() {
 void exec3_3() {
     int GSI_prefix, group_identifier, publisher_code, item_number, check_digit;
     printf("Enter ISBN: ");
-    scanf("%d-%d-%d-%d-%d", &GSI_prefix, &group_identifier, &publisher_code, &item_number, &check_digit);
+    scanf("%d -%d -%d -%d -%d", &GSI_prefix, &group_identifier, &publisher_code, &item_number, &check_digit);
     //按照要求进行格式输出
     printf("GSI prefix:%d\nGroup identifier:%d\n", GSI_prefix, group_identifier);
     printf("Publisher code:%d\nItem number:%d\nCheck digit:%d\n", publisher_code, item_number, check_digit);
@@ -165,11 +166,47 @@ void exec3_4() {
 }
 
 /**
- * 编程练习5:编写一个程序，要求用户输入(按照任意次序)输入1～16的所有整数，然后用4*4的矩阵的形式将它们显示出来
- * ，再计算出每行、每列和每条对角线上的和
+ * Project 3.05
+Write a program that asks the user to enter the numbers from 1 to 16 (in any
+order) and then displays the numbers in a 4 by 4 arrangement, followed by the
+sums of the rows, columns, and diagonals:
+    Enter the numbers from 1 to 16 in any order:
+    16 3 2 13 5 10 11 8 9 6 7 12 4 15 14 1
+    16  3  2 13
+     5 10 11  8
+     9  6  7 12
+     4 15 14  1
+    Row sums: 34 34 34 34
+    Column sums: 34 34 34 34
+    Diagonal sums: 34 34
+    If the row, column, and diagonal sums are all the same (as they are in this
+    example), the numbers are said to form a *magic square*. The magic square shown
+    here appears in a 1514 engraving by artist and mathematician Albrecht Dürer.
+(Note that the middle numbers in the last row give the date of engraving.)
  */
 void exec3_5() {
-    //此题目后面再写
+    int n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16;
+
+    printf("Enter the numbers from 1 to 16 in any order:\n");
+    scanf("%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d%d",
+          &n1, &n2, &n3, &n4, &n5, &n6, &n7, &n8,
+          &n9, &n10, &n11, &n12, &n13, &n14, &n15, &n16);
+
+    printf("\n%3d%3d%3d%3d\n%3d%3d%3d%3d\n",
+           n1, n2, n3, n4, n5, n6, n7, n8);
+
+    printf("%3d%3d%3d%3d\n%3d%3d%3d%3d\n\n",
+           n9, n10, n11, n12, n13, n14, n15, n16);
+
+    printf("Row sums: %d %d %d %d\n", (n1 + n2 + n3 + n4), (n5 + n6 + n7 + n8),
+           (n9 + n10 + n11 + n12), (n13 + n14 + n15 + n16));
+
+    printf("Column sums: %d %d %d %d\n",
+           (n1 + n5 + n9 + n13), (n2 + n6 + n10 + n14),
+           (n3 + n7 + n11 + n15), (n4 + n8 + n12 + n16));
+
+    printf("Diagonal sums: %d %d\n",
+           (n1 + n6 + n11 + n16), (n4 + n7 + n10 + n13));
 
 }
 
@@ -180,7 +217,7 @@ void exec3_6() {
     int num1, demon1, num2, demon2, result_num, result_demon;
     printf("Enter two fractions separated by a plus sign: ");
     //这里加不加+都是可以的
-    scanf("%d/%d+%d/%d", &num1, &demon1, &num2, &demon2);
+    scanf("%d /%d+%d /%d", &num1, &demon1, &num2, &demon2);
     result_num = num1 * demon2 + num2 * demon1;
     result_demon = demon1 * demon2;
     printf("The sum is: %d/%d", result_num, result_demon);
@@ -189,9 +226,20 @@ void exec3_6() {
 int main() {
     //exec3_1();
     //exec3_2();
-     exec3_3();
+    // exec3_3();
     // exec3_4();
     //exec3_6();
     //exec3_1_optimization();
+    char str[] = "Hello, world,how, are, you";
+    char *token;
+    /*str 是要分割的字符串，第一次调用时传入原始字符串，在后续调用中传入NULL。
+     * delim 是分隔符的字符串，用来指定分隔符集合。
+     * strtok函数返回被分割的子字符串，如果没有可分割的子字符串，返回NULL。*/
+    token = strtok(str, ",");
+    while (token != NULL) {
+        printf("%s\n", token);
+        token = strtok(NULL, ","); //进行下一次分割
+    }
+
     return 0;
 }
