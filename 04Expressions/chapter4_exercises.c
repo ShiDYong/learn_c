@@ -118,11 +118,12 @@ void exec_05() {
      * ( c ）由于C89下8/-5的运算结果为﹣1或者﹣2，因此8%-5的运算结果为3或者﹣2。
      * ( d ）由于C89下﹣8/-5的运算结果为1，因此﹣8%-5的运算结果为﹣3。*/
 }
+
 /*
  * Exercise 4.06
 Repeat Exercise 5 for C99.
  */
-void exec_06(){
+void exec_06() {
     printf("8 %% 5 = %d\n", 8 % 5);
     printf("-8 %%5 = %d\n", -8 % 5);
     printf("8 %% -5 = %d\n", 8 % -5);
@@ -133,32 +134,78 @@ void exec_06(){
  * 因此﹣8%5的运算结果为﹣3。( c ）由于C99下8/-5的运算结果为﹣1，因此88-5的运算结果为3。
  * ( d ）由于C99下﹣8/-5的运算结果为1，因此﹣8%-5的运算结果为﹣3。三几步景，把总的结果减去1，相减后的结果除以10取余数，用该月向余法为正*/
 }
+
 /**
- * 练习09:给出下列片段的输出结果。假设i、j和k都是int型整数
+ * Exercise 4.09
+Show the output produced by the following program fragments. Assume that `i`,
+`j`, and `k` are `int` variables.
+    (a) i = 7; j = 8;
+        i *= j + 1;
+        printf("%d %d", i, j);
+    (b) i = j = k = 1;
+        i += j += k;
+        printf("%d %d %d", i, j, k);
+    (c) i = 1; j = 2; k = 3;
+        i -= j -= k;
+        printf("%d %d %d", i, j, k);
+    (d) i = 2; j = 1; k = 0;
+        i *= j *= k;
+        printf("%d %d %d", i, j, k);
  */
 void exec_09() {
+    /*+++++++++++++++++==============运算符列表如下，按照优先级从高到低，即最前面，数字越小的优先级越高，越优先算。
+     * 文章连接：https://www.dotcpp.com/course/638
+*/
     int i, j, k;
-    //a.
-    i = 7, j = 8;
+    //  (a)
+    i = 7;
+    j = 8;
     i *= j + 1;
-    printf("%d %d\n", i, j);
-    //b.
+    printf("a的结果值：%d %d\n", i, j); //63,9
+    /*该表达式中算数运算符＋先计算，得到结果9，复合运算符再计算，最终操作数 i 被赋值为63(7*9的运算结果）；
+     * 操作数 j 参与的加法运算并未产生赋值的副作用。最终打印结果为6 38*/
+    // (b)
     i = j = k = 1;
-    i += j += k; //根据+=是右结合可以判断出:1.先j=j+k,然后i= i+j;
-    printf("%d %d %d \n", i, j, k);
-    //c.
-    i = 1, j = 2, k = 3;
-    i -= j -= k;  //同理也是右结合
-    printf("%d %d %d\n", i, j, k);
-    //d.
-    i = 2, j = 1, k = 0;
+    i += j += k;
+    printf("b的结果值：%d %d %d\n", i, j, k); //3,2,1
+    /*复合赋值运算符是右结合的，因此在表达式内需要从右向左运算，操作数 k 并未产生副作用，
+     * 因此为1；操作数 j 由于＋＝运算符的副作用得到结果2(1+1的运算结果）；
+     * 操作数 i 由于＋＝运算符的副作用得到结果3(1+2的运算结果，2为 j 的值）。最终打印结果为3 2 1
+     * */
+    //(c)
+    i = 1;
+    j = 2;
+    k = 3;
+    i -= j -= k;
+    printf("c的结果值：%d %d %d\n", i, j, k);//2,-1,3
+    /*操作数 k 的值未产生副作用，始终为3；操作数 j 由于﹣=赋值运算符的副作用被修改为﹣1(2-3的运算结果）；
+     * 操作数 i 由于﹣=赋值运算符的副作用被修改为2(1-(-1）的运算结果）。最终打印结果为2-1 3*/
+    // (d)
+    i = 2;
+    j = 1;
+    k = 0;
     i *= j *= k;
-    printf("%d %d %d\n", i, j, k);
+    printf("d的结果值：%d %d %d\n", i, j, k); //0,0,0
+    /*操作数 k 的值未产生副作用，始终为0；操作数 j 由于＊=赋值运算符的副作用被修改为0(1*0的运算结果）；操作数 i 由于＊＝赋值运算符的副作用*/
 
 }
 
 /**
- * 课后练习题目10：给出下列程序片段的输出结果。假设i和j都是int型变量
+ * Exercise 4.10
+Show the output produced by each of the following program fragments. Assume that
+`i` and `j` are `int` variables.
+    (a) i = 6;
+        j = i += i;
+        printf("%d %d", i, j);
+    (b) i = 5;
+        j = (i -= 2) + 1;
+        printf("%d %d", i, j);
+    (c) i = 7;
+        j = 6 + (i = 2.5);
+        printf("%d %d", i, j);
+    (d) i = 2; j = 8;
+        j = (i = 6) + (j = 3);
+        printf("%d %d", i, j);
  */
 void exec_10() {
     int i, j;
@@ -173,17 +220,37 @@ void exec_10() {
     //c.
     i = 7;
     j = 6 + (i = 2.5);
-    printf("%d %d\n", i, j); //i=2,j=8,这里是否涉及类型转换？和Java的基本数据类型转换不一致？待后面确定
+    printf("%d %d\n", i, j); //i=2,j=8
+    /*首先给变量i赋值为7，然后给变量j赋值为6加上(i=2.5)的结果。在C语言中，赋值表达式的值是被赋的值，因此(i=2.5)的结果是2，
+     * 而不是2.5，因为在赋值操作中会将右侧的表达式计算结果转换为左侧变量的类型。
+     * 所以，j的值将是6加上2，即8。然后，使用printf函数打印i和j的值。*/
     //d.
     i = 2, j = 8;
     j = (i = 6) + (j = 3);
     printf("%d %d\n", i, j);//6,9
-
+    /*首先将变量i赋值为6，然后将变量j赋值为3。接着，表达式 (i = 6) + (j = 3) 中的两个赋值表达式会先执行，
+     * 将i赋值为6，将j赋值为3。然后，这两个赋值表达式的结果分别为6和3，
+     * 因此表达式的值为6+3=9。最后，printf函数打印出变量i和j的值。
+    */
 
 }
 
 /**
- * 课后练习11.
+ * Exercise 4.11
+Show the output produced by each of the following program fragments. Assume that
+`i`, `j`, and `k` are `int` variables.
+    (a) i = 1;
+        printf("%d ", i++ - 1);
+        printf("%d", i);
+    (b) i = 10; j = 5;
+        printf("%d ", i++ - ++j);
+        printf("%d %d", i, j);
+    (c) i = 7; j = 8;
+        printf("%d ", i++ - --j);
+        printf("%d %d", i, j);
+    (d) i = 3; j = 4; k = 5;
+        printf("%d ", i++ - j++ + --k);
+        printf("%d %d %d", i, j, k);
  */
 void exec_11() {
     int i, j, k;
@@ -200,13 +267,39 @@ void exec_11() {
     printf("%d\n", i++ - --j);//7-7=0，然后i=i+1=8
     printf("%d %d\n", i, j); //8,7
     //d.
-    i = 2, j = 8, k = 5;
-    printf("%d\n", i++ - j++ + --k);//2-8-(5-1)=-10
-    printf("%d %d %d\n", i, j, k); //3,9,4
+    i = 3;
+    j = 4;
+    k = 5;
+    printf("%d ", i++ - j++ + --k);
+    printf("%d %d %d", i, j, k);
+    /*首先，将 i 赋值为 3，j 赋值为 4，k 赋值为 5。
+    在第一个 printf 语句中，表达式 i++ - j++ + --k 会按照运算符优先级和结合性计算。
+    --k 先执行，k 变为 4，表达式变为 i++ - j++ + 4。
+    i++ 和 j++ 是后缀自增运算符，所以它们的值在整个表达式计算完成后才会自增。
+    因此，现在表达式的值是 3 - 4 + 4，结果为 3 - 4 + 4 = 3。
+    第一个 printf 输出 3。
+    第二个 printf 输出 i, j, k 的值。
+    由于 i 和 j 是后缀自增运算符，它们的值在前一个表达式求值之后才会增加，因此 i 变成了 4，j 变成了 5。
+    k 已经在前一个表达式中执行了 --k 操作，所以 k 的值为 4。
+    因此，第二个 printf 输出的结果是 4 5 4。*/
 }
 
 /**
- * 课后练习12题
+ * Exercise 4.12
+Show the output produced by each of the following program fragments. Assume that
+`i` and `j` are `int` variables.
+    (a) i = 5;
+        j = ++i * 3 - 2;
+        printf("%d %d", i, j);
+    (b) i = 5;
+        j = 3 - 2 * i++;
+        printf("%d %d", i, j);
+    (c) i = 7;
+        j = 3 * i-- + 2;
+        printf("%d %d", i, j);
+    (d) i = 7;
+        j = 3 + --i * 2;
+        printf("%d %d", i, j);
  */
 void exec_12() {
     int i, j;
@@ -216,13 +309,15 @@ void exec_12() {
     printf("%d %d\n", i, j);
     //b.
     i = 5;
-    j = 3 - 2 * i++; //3 -2*5=-17,i++=6
+    j = 3 - 2 * i++; //3 -2*5=-7,i++=6
     printf("%d %d\n", i, j);
     //c.
     i = 7;
     j = 3 * i-- + 2;
     printf("%d %d\n", i, j);
-
+    /*i 被赋值为 7。然后，j 被计算为 3 * i-- + 2。这里需要注意的是 i-- 表示先使用 i 的当前值进行计算，然后再将 i 减1。
+     * 所以，j 的计算过程是 3 * 7 + 2，得到 j 的值为 23。
+     * 但是由于 i-- 中的后缀自减操作，i 的值在使用之后被减1，所以 i 的值变成了 6。*/
     //d.
     i = 7;
     j = 3 + --i * 2; //3+(7-1)*2=15
@@ -231,24 +326,41 @@ void exec_12() {
 }
 
 /**
- * 课后练习15题；验证表达式++i和表达式i++与(i+=1)哪个是完全形同的？
+ * Exercise 4.13
+  Only one of the expressions `++i` and `i++` is exactly the same as `(i += 1)`;
+  which is it? Justify your answer.
  */
 void exec_13() {
+    /*In C code, the expression ++i is exactly the same as (i += 1).
+Here's why:
+++i: This is the pre-increment operator. It increments the value of i and then returns
+     the updated value. So, ++i increments the value of i by 1, and then the updated value is returned.
+(i += 1): This is the compound assignment operator combined with the addition operator.
+     It adds 1 to the value of i and stores the result back into i. Then, it returns the updated value of i.
+    Both expressions ++i and (i += 1) directly increment the value of i by 1,
+     and they both evaluate to the updated value of i. Therefore, they are exactly the same.
+*/
     int i = 1;
     // ++i;    //2
     // i++;       //i++表达式运行后再打印就变成了2
     i += 1;
     printf("i的结果：%d\n", i); //
-    //综上可知道：++i和i+=1是完全相同的
+    /*习题解析 C 语言中的自增运算符、自减运算符和赋值运算符都会产生副作用，但是产生副作用的时间点不同。
+     * 通常 C 语言用"顺序点"来界定副作用时间点，指出"应该在上一个顺序点和下一个顺序点之间对存储的操作数的值进行更新"。
+     * 因此表达式＋+ i 和 i ++中前缀运算符产生副作用先于后缀运算符。虽然最终都会产生赋值效果，
+     * 但是两个表达式的值并不相同；只有＋+ i 与表达式（ i +=1）相，
+     * 表达式的值为（ i +1)，而 i +＋表达式的值为 i 。表达式＋+ i 与表达式（ i +=1）含义相同*/
 
 }
 
 /**
- * 课后练习14：添加圆括号，说明c语言编译器如何解释下列表达式
- *    ( a) a * b - c * d + e
-      (b) a / b % c / d
-      (c) - a - b + c - + d
-      (d) a * - b / c - d
+ Exercise 4.14
+Supply parentheses to show how a C compiler would interpret each of the
+    following expressions.
+    (a) a * b - c * d + e
+    (b) a / b % c / d
+    (c) - a - b + c - + d
+    (d) a * - b / c - d
  */
 void exec_14() {
     /**
@@ -260,11 +372,29 @@ void exec_14() {
 
 }
 
+/*
+ * Exercise 4.15
+Give the values of `i` and `j` after each of the following expression statements
+has been executed. (Assume that `i` has the value 1 initially and `j` has the
+value 2.)
+    (a) `i += j;`
+    (b) `i--;`
+    (c) `i * j / i;`
+    (d) `i % ++j;`
+ */
+void exec_test15() {
+    //(a) `i += j;`
+
+    // (b) `i--;`
+    // (c) `i * j / i;`
+    // (d) `i % ++j;`
+}
+
 int main() {
     // exec_01();
     //exec_02();
     //exec_03();
-    exec_05();
+    //exec_05();
     // exec_09();
     //exec_10();
     // exec_11();
