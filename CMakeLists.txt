@@ -25,3 +25,4 @@ add_subdirectory(15Writing_Large_Programs)
 add_subdirectory(24ErrorHandling)
 
 add_subdirectory(26Miscellaneous_Library_Functions)
+add_subdirectory(30SecretLifeOfPrograms)

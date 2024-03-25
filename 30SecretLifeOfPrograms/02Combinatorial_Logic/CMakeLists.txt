@@ -1,0 +1,1 @@
+add_executable(logic_gates logic_gates.c)

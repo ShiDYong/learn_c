@@ -401,6 +401,41 @@ int main() {
     // exec_11();
     //exec_12();
     //exec_13();
+    // 定义两个整数，一个正数，一个负数
+    int positive_number = 10;    // 正数
+    int negative_number = -10;   // 负数
+
+    // 打印两个数及其二进制表示
+    printf("Positive number: %d (Binary: %08b)\n", positive_number, positive_number);
+    printf("Negative number: %d (Binary: %08b)\n", negative_number, negative_number);
+
+    // 判断符号位
+    if ((positive_number & 0x80000000) == 0) {
+        printf("Positive number's sign bit is 0, indicating it's positive.\n");
+    } else {
+        printf("Positive number's sign bit is 1, indicating it's negative.\n");
+    }
+
+    if ((negative_number & 0x80000000) == 0) {
+        printf("Negative number's sign bit is 0, indicating it's positive.\n");
+    } else {
+        printf("Negative number's sign bit is 1, indicating it's negative.\n");
+    }
+
+//    int i = 127, j = 1;
+//    int k = -128, m = -1;
+//    printf("整数相加溢出: %d\n", i + j);
+//    printf("负数相加溢出: %d\n", k + m);
+    char i = 127;   // 8 位补码整数，范围为 -128 到 127
+    char j = 1;    // 无符号 8 位整数，范围为 0 到 255
+    char k = -128;  // 8 位补码整数，范围为 -128 到 127
+    char m = -1;    // 8 位补码整数，范围为 -128 到 127
+   //char占用一个字节，即8个比特
+    printf("整数相加溢出: %d\n", (char) (i + j));  //
+    printf("负数相加溢出: %d\n", (char) (k + m));  // 模拟溢出
+
+
+
     return 0;
 }
 
