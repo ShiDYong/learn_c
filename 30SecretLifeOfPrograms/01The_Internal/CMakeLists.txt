@@ -1,1 +1,1 @@
-add_executable(operator c_operator.c file_premisson.c)
+add_executable(operator c_operator.c file_premise.c)
