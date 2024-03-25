@@ -3,6 +3,7 @@ Created by mason on 2023/5/1.
  第四章：C语言的常用的表达士的课后练习题目
 */
 #include<stdio.h>
+#include <stdint.h>
 
 /**
  * Exercise 4.01
@@ -391,7 +392,7 @@ void exec_test15() {
 }
 
 int main() {
-    // exec_01();
+     exec_01();
     //exec_02();
     //exec_03();
     //exec_05();

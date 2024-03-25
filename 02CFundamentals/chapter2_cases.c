@@ -75,7 +75,7 @@ int dwight_3() {
     double floor_weight = floor(volume / constant);//在C语言中，如果两个整数相除，那么结果会被“截短“
     //上面使用向上取整的函数，还是无法实现，因为height、width、length都是int类型
     //因此要使用标准库中的向上和向下取整需要改变变量的类型为double，但是在C语言中
-    //由于volume和constant都是double类型，而且在C语言中整数相除的结果不会被截断，
+    //由于volume和constant都是double类型，而且在C语言中相除的结果不会被截断，
     // 因此不需要对volume / constant进行向上取整操作,除非结果要求为整数
     // 此外，将double类型赋值给int类型会导致精度丢失，应该使用double类型来存储重量。
     weight = volume / constant; //结果不要求为整数
@@ -95,8 +95,6 @@ int dwight_3() {
     printf("Dimensions weight (pounds): %.2lf\n", weight);
     printf("Dimensions floor_weight (pounds): %.2lf\n", floor_weight);
     return weight;
-
-
 }
 
 /*
