@@ -3,12 +3,17 @@ Created by mason on 2023/5/4.
  第五章：选择语句课后编程题
  */
 #include<stdio.h>
+#include <stdlib.h>
 
 /**
- * 编程题01:编写一个程序，确定一个数的位数
- * Enter a number: 374
- * The number 384 has 3 digits
- * 假设输入的数最多不超过4位。
+ Project 5.01
+Write a program that calculates how many digits a number contains:
+Enter a number: 374
+The number 374 has 3 digits
+You many assume that the number has no more than four digits. *Hint*: Use `if`
+statements to test the number. For example, if the number is between 0 and 9, it
+has one digit. If the number is between 10 and 99, it has two digits.
+
  */
 void exec5_01() {
     int n;
@@ -26,25 +31,66 @@ void exec5_01() {
     else if (100 <= n && n <= 999)
         //printf("The number %d has 3 digits\n", n);
         d = 3;
-    else if (1000 <= n && n <= 9999)
-        // printf("The number %d has 4 digits\n", n);
-        d = 4;
+    else d = 4;
     printf("The number %d has %d digits\n", n, d);
 
-//    else
-//        printf("The enter number %d is illegal\n", n);
+}
+
+/*
+ * 优化以上算法，不限制输入的数字位数，更加通用
+ * Function to calculate the number of digits in a number
+ */
+int countDigits(int number) {
+    //Initialize count to 1 for numbers with at least one digit
+    int count = 1;
+    //Handle negative numbers
+    if (number < 0) {
+        number = -number;
+    }
+    //Count digits using a loop
+    //use a do-while loop to count the digits by repeatedly dividing the number by 10 until it becomes 0.
+    while (number >= 10) {
+        number /= 10;
+        count++;
+    }
+
+    return count;
 
 
 }
 
+/*
+ * 调用上述函数
+ */
+void callCountDigits() {
+    int number;
+    int result;
+    printf("Enter a number: ");
+    result = scanf("%d", &number);
+    //Read the input and check if it's a number
+    if (result != 1) {// If it's not 1, it means the input was not successfully read as an integer.
+        printf("Please enter a valid number.\n");
+        //Clear input buffer
+        while ((result = getchar()) != '\n' && result != EOF);
+        //Exit the program
+        exit(EXIT_FAILURE);
+    }
+    //调用计算位数的函数
+    int digits = countDigits(number);
+    printf("The number %d has %d digit(s)\n", number, digits);
+}
+
 /**
- * 编程题目二：编写一个程序，要求用户输入24小时制的时间，然后显示12小时制的格式：
- * Enter a 24-hour time: 21:11
- * Equivalent 12-hour time: 9:11 PM
+    Project 5.02
+    Write a program that asks the user for a 24-hour time, then displays the time in
+    12-hour form:
+    Enter a 24-hour time: 21:11
+    Equivalent 12-hour time: 9:11 PM
+    Be careful not to display 12:00 as 0:0
  *
  */
 void exec5_2() {
-    int hour, minute;
+    int hour = 0, minute = 0;
     printf("Enter a 24-hour time: ");
     scanf("%d :%d", &hour, &minute);
     //判断hour是否大于12点，如果大于12点，hour-12的值加上PM,等于12点就是12:00
@@ -62,88 +108,201 @@ void exec5_2() {
     //打印的方式存在的问题是12:00显示的12：0
 }
 
+/*
+ * 跟上面相反的方式进行判断，其效果一样的
+ */
+void exec5_2_02() {
+    int hour, min;
+    printf("Enter a 24-hour time: ");
+    scanf("%d:%d", &hour, &min);
+    if (hour > 12 && hour <= 48)
+        printf("Equivalent 12-hour time: %d:%02d PM", hour % 12, min);
+    else
+        printf("Equivalent 12-hour time: %d02%d AM", hour, min);
+
+}
+
+/*
+ * 进一步优化上面的方法，使其更具有通用性
+ * 以及充分考虑各种异常情况的出现
+ * Function to convert 24-hour time to 12-hour time
+ * Returns the equivalent 12-hour time as a String
+ * If an error occur, return NULL
+ */
+char *convertTo12HourFormat(int hour, int minute) {
+    //Validate hour and minute value
+    if (hour < 0 || hour > 23 || minute < 0 || minute > 59) {
+        return NULL;
+    }
+    //Allocate memory for result String
+    char *result = (char *) malloc(sizeof(char) * 9);
+    //至于为什么上面为何如此处理：
+    //结果字符串的格式： 等效的 12 小时时间字符串的格式为“00:00 AM\0”。 它由 8 个字符组成，表示时间部分 (hh:mm) 和 AM/PM 名称，以及一个用于表示字符串结尾的空终止符 (\0) 的附加字符。
+    //内存分配：当使用malloc动态分配内存时，我们需要指定要分配的总字节数。 C 字符串中的每个字符占用一个字节的内存。 因此，为了容纳时间字符串和空终止符的 8 个字符，我们需要 8 + 1 = 9 字节的内存。
+    //动态分配：行 char* result = (char*)malloc(sizeof(char) * 9); 在堆上动态分配内存来存储结果字符串。 malloc 函数将要分配的总字节数作为其参数，
+    // 计算公式为 sizeof(char) * 9。强制转换 (char*) 用于指示 malloc 返回的内存指针应解释为指向 一个人物。
+    //sizeof(char) 的用法：在 C 语言中，语言规范保证 sizeof(char) 为 1。 但是，在分配语句中显式包含 sizeof(char)
+    // 有助于使代码更加明确和可维护，特别是在数据类型将来发生变化的情况下。
+    //因此， char* 结果 = (char*)malloc(sizeof(char) * 9); 为可保存等效 12 小时时间的字符串分配内存，格式为“00:00 AM\0”。
+    if (result == NULL) {
+        return NULL; //Memory allocation failed
+    }
+
+    //Convert to 12-hour format,这里需要特别注意下：
+    //约定：在 12 小时时间约定中，午夜通常表示为 12:00 AM。 这一惯例被熟悉 12 小时格式阅读时间的人们广泛接受和理解。
+    //一致性：当小时为 0 时，通过将 conversionHour 设置为 12 并将后缀设置为“AM”，代码可确保与午夜的常规表示形式保持一致。 这使得输出更加直观并且更容易为用户所理解。
+    //可读性：代码明确指出将午夜表示为 12:00 AM，让阅读代码的任何人都清楚预期的行为是什么。
+    //因此，通过在小时为 0 时将 conversionHour 设置为 12 并将后缀设置为“AM”，代码可以正确遵循以 12 小时时间格式表示午夜的约定。
+    int convertedHour = (hour == 0 || hour == 12) ? 12 : hour % 12;
+    char *suffix = (hour >= 12) ? "PM" : "AM";
+    //Format the result string
+    sprintf(result, "%02d:%02d %s", convertedHour, minute, suffix);
+    //为什么这里使用sprintf函数的原因：
+    //字符串格式化：sprintf 函数允许我们使用各种占位符（格式说明符）（例如 %d、%s、%f 等）格式化字符串，并用相应的值填充这些占位符。
+    // 在本例中，格式字符串“%02d:%02d %s”指定时间字符串的格式，其中两位数字表示小时和分钟（如有必要，用前导零填充），后跟空格和 AM/PM 后缀。
+    //动态字符串创建：使用 sprintf，我们可以根据提供的格式和值动态创建字符串。 当我们需要以编程方式构造字符串时，例如生成用于显示或存储的格式化输出时，这特别有用。
+    //用前导零填充：%02d 格式说明符可确保小时和分钟值小于 10 时使用前导零进行格式化。这可确保格式一致并提高结果时间字符串的可读性。
+    //连接不同类型：sprintf 允许我们将不同类型的数据（整数、字符串等）连接成单个字符串。 在本例中，我们将整数（convertedHour 和 分钟）和字符串（后缀）组合到结果字符串中。
+    //避免缓冲区溢出：sprintf 自动处理目标缓冲区（结果数组）的大小，并确保格式化字符串适合缓冲区的边界。 这有助于防止使用 strcpy 或 strcat 等不安全的字符串操作函数时可能发生的缓冲区溢出漏洞。
+    //总体而言，在此上下文中使用 sprintf 提供了一种方便且安全的方法，可以通过适当的填充和连接来格式化等效的 12 小时时间字符串，从而生成更清晰、更易读的代码。
+    return result;
+
+}
+
+char callConvertTo12HourFormat() {
+    int hour, minute;
+    int result;
+    printf("Enter a 24-hour time (hh:mm): ");
+    //Read the input
+    result = scanf("%d:%d", &hour, &minute);
+    //用于检查输入是否包含非数字字符或两个以上的整数。 如果任一条件
+    if (result != 2 || getchar() != '\n') {
+        printf("Invalid input format. Please enter time in format hh:mm.\n");
+        return EXIT_FAILURE;
+    }
+    //Convert to 12-hour format
+    char *convertedTime = convertTo12HourFormat(hour, minute);
+    if (convertedTime == NULL) {
+        printf("Invalid time. Hour must be between 0 and 23, and minute must be between 0 and 59.\n");
+        return EXIT_FAILURE;
+    }
+
+    printf("Equivalent 12-hour time: %s\n", convertedTime);
+
+    //Free memory allocated for result
+    free(convertedTime);
+    return EXIT_SUCCESS;
+
+}
+
 
 /**
- * 课后编程题第3题
- * 3。修改5.3节的broker.c程序，做出下面两种改变。
- * a.不再直接输出交易额，而是要求用户输入股票的数量和每股的价格；
- * b.增加语句来计算经纪人竞争对手的佣金(少于2000股时佣金为每股33美元+3美分，2000股或更多股时佣金为每股33美元+2美分).
- 在显示原有经纪人佣金的同时，也显示出竞争对手的佣金
+ Project 5.03
+Modify the `broker.c` program of Section 5.2 by making both of the following
+changes:
+    (a) Ask the user to enter the number of shares and the price per share, instead
+    of the value of the trade.
+    (b) Add statements that compute the commission charged by a rival broker ($33
+    plus 3 cents per share fewer than 2000 shares; $33 plus 2 cents per share for
+    2000 shares or more). Display the rival's commission as well as the commission
+    charged by the original broker.
  *
  *
  */
 
 void exec5_3() {
-    int num;
-    float price, trade, commission, commission_competitor;
-    printf("Enter stock of number and price: ");
-    //避免用户输入时出现异常，可以分别输入两次
-    scanf("%d %f", &num, &price);
-    trade = num * price;
+    int num_shares;
+    float price_per_share, value_of_trade, commission, rival_commission;
 
-    if (trade < 2500.00f)
-        commission = 30.00f + trade * 0.017f;
-        /* else if(trade >= 2500.00f && trade < 6250.00f)
-             commission = 56.00f + trade * 0.0066f;
-             注意上这种写法是多余的。如果第一个if字句的trade的值小于2500则计算佣金，
-             当到达第二个if测试时，trade不可能小于2500，因此一定大于2500，条件trade>=
-             2500.00f总是为真，因此加上这个条件是没有意义的
-             if语句和switch语句允许程序在一组可选项中选择一条特定的执行路径；
-             */
-    else if (trade < 6250.00f)
-        commission = 56.00f + trade * 0.0066f;
-    else if (trade < 20000.00f)
-        commission = 76.00f + trade * 0.0034f;
-    else if (trade < 50000.00f)
-        commission = 100.00f + trade * 0.0022f;
-    else if (trade < 500000.00f)
-        commission = 155.00f + trade * 0.0011f;
+    // Ask the user to enter the number of shares and the price per share
+    printf("Enter number of shares: ");
+    scanf("%d", &num_shares);
+    printf("Enter price per share: ");
+    scanf("%f", &price_per_share);
+
+    // Calculate the value of the trade
+    value_of_trade = num_shares * price_per_share;
+
+    // Calculate commission charged by the original broker
+    if (value_of_trade < 2500.00f)
+        commission = 30.00f + value_of_trade * 0.017f;
+    else if (value_of_trade < 6250.00f)
+        commission = 56.00f + value_of_trade * 0.0066f;
+    else if (value_of_trade < 20000.00f)
+        commission = 76.00f + value_of_trade * 0.0034f;
+    else if (value_of_trade < 50000.00f)
+        commission = 100.00f + value_of_trade * 0.0022f;
+    else if (value_of_trade < 500000.00f)
+        commission = 155.00f + value_of_trade * 0.0011f;
     else
-        commission = 255.00f + trade * 0.0009f;
+        commission = 255.00f + value_of_trade * 0.0009f;
+
     if (commission < 39.00f)
-
         commission = 39.00f;
-//    if (num < 2000)
-//        //commission_competitor = num * 33.03f; 计算方式有问题，调试执行时发现数据相差太大了
-//        commission_competitor = 33.00f + 0.03f * num;
-//    else
-//        commission_competitor = 33.00f + 0.02f * num;
-    //竞争对手的计算佣金还可以三元运算符,更加简洁一些,减少不必要的if else等等
-    commission_competitor = num < 2000 ? (33.00f + 0.03f * num) : (33.00f + 0.02f * num);
 
-    //变量取名的：shares股票，share_price每股价格
-    printf("broker Commission is:$%.2f\n", commission);
-    printf("competitor Commission is:$%.2f\n", commission_competitor);
+    // Calculate commission charged by a rival broker
+    if (num_shares < 2000)
+        rival_commission = 33.00f + num_shares * 0.03f;
+    else
+        rival_commission = 33.00f + num_shares * 0.02f;
+
+    printf("Original Broker's Commission: $%.2f\n", commission);
+    printf("Rival Broker's Commission: $%.2f\n", rival_commission);
+
 
 }
 
 /**
- * 编程练习题4:表5-6中展示了测量风力的莆福风级的简化版本
- * 编写一个程序，要求用户输入风速(海里/小时),然后显示相应的描述
+ Project 5.04
+Here's a simplified version of the Beaufort scale, which is used to estimate
+    wind force:
+        | Speed (knots) | Description
+        | --- | --- |
+        | Less than 1 | Calm |
+        | 1-3 | Light air |
+        | 4-27 | Breeze |
+        | 28-47 | Gale |
+        | 48-63 | Storm |
+        | Above 63 | Hurricane |
+Write a program that asks the user to enter a wind speed (in knots), then
+displays the corresponding description.
  */
 void exec5_4() {
-    int speed;
-    printf("Enter wind of speed: ");
-    scanf("%d", &speed);
+    float speed;
+    printf("Enter wind of speed (n mile/hour): ");
+    scanf("%f", &speed);
     printf("Wind description: ");
 
-    if (speed < 1)
+    if (speed < 1.0f)
         printf("Calm\n");
-    else if (speed <= 3)
+    else if (speed <= 3.0f)
         printf("Light air\n");
-    else if (speed <= 27)
+    else if (speed <= 27.0f)
         printf("Breeze\n");
-    else if (speed <= 47)
+    else if (speed <= 47.0f)
         printf("Gale\n");
-    else if (speed <= 63)
+    else if (speed <= 63.0f)
         printf("Storm\n");
     else
         printf("Hurricane\n");
 }
 
 /**
- * 编程题5：在美国的某个州，单身居民的需要缴纳表5-7中列出的所得税
- * 编写一个程序，要求用户输入应缴纳的所得税，然后显示税金
+Project 5.05
+In one state, single residents are subject to the following income tax:
+
+| Income        | Amount of tax |                               |
+| ------------- | ------------- | ----------------------------- |
+| Not over $750 | 1% of income  |
+| $750-$2,250   | $7.50         | plus 2% of amount over $750   |
+| $2,250-$3,750 | $37.50        | plus 3% of amount over $2,250 |
+| $3,750-$5,250 | $82.50        | plus 4% of amount over $3,750 |
+| $5,250-$7,000 | $142.50       | plus 5% of amount over $5,250 |
+| Over $7,000   | $230.00       | plus 6% of amount over $7,000 |
+
+Write a program that asks the user to enter the amount of taxable income, then
+displays the tax due.
+
  */
 void exec5_5() {
     float income, person_income_tax;
@@ -165,7 +324,7 @@ void exec5_5() {
 }
 
 /**
- * 编程题6:修改4.1节的upc.c程序，使其可以检测CPC的有效性。在用户输入UPC后，程序将显示VALID或者NOT VALID.
+ * 编程题5.06:修改4.1节的upc.c程序，使其可以检测CPC的有效性。在用户输入UPC后，程序将显示VALID或者NOT VALID.
  */
 void exec5_6() {
     int i0, i1, i2, i3, i4, i5, i6, i7, i8, i9, i10, i11, first_sum, second_sum, total;
@@ -180,11 +339,15 @@ void exec5_6() {
 }
 
 /**
- * 编程练习题7:编写一个程序，从用户输入的4个整数中找出最大值和最小值
- * Enter four integer: 21 43 10 35
- * Largest: 43
- * Smallest:10
- * 要求尽可能少用if语句。提示：4条if语句就足够了
+ Project 5.07
+Write a program that finds the largest and smallest of four integers entered by
+the user:
+Enter four integers: 21 42 10 35
+Largest: 43
+Smallest: 10
+Use as few `if` statements as possible: *Hint*: Four `if` statements are
+sufficient.
+
  */
 void exec5_7() {
     int n1, n2, n3, n4, max, min, max1, max2, min1, min2;
@@ -418,11 +581,22 @@ void exec5_10() {
     //要使用switch语句，把成绩拆分为两部分，然后使用switch语句判定十位上的数字
     printf("Letter grade: ");
     switch (grade / 10) {
-        case 9:case 10:printf("A");break;
-        case 8:printf("B");break;
-        case 7:printf("C");break;
-        case 6:printf("D");break;
-        default:printf("F");break;
+        case 9:
+        case 10:
+            printf("A");
+            break;
+        case 8:
+            printf("B");
+            break;
+        case 7:
+            printf("C");
+            break;
+        case 6:
+            printf("D");
+            break;
+        default:
+            printf("F");
+            break;
             //这种写法会出现如下输出
 
 //            Enter numerical grade: 110
@@ -446,16 +620,27 @@ void exec5_10_2() {
     if (grade > 100 || grade < 0)
         grade = -11;
     switch (grade / 10) {
-        case 0: case 1:case 2:case 3: case 4: case 5:
-            printf("Letter grade: F\n");break;
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+            printf("Letter grade: F\n");
+            break;
         case 6:
-            printf("Letter grade: D\n");break;
+            printf("Letter grade: D\n");
+            break;
         case 7:
-            printf("Letter grade: C\n");break;
+            printf("Letter grade: C\n");
+            break;
         case 8:
-            printf("Letter grade: B\n");break;
-        case 9:case 10:
-            printf("Letter grade: A\n");break;
+            printf("Letter grade: B\n");
+            break;
+        case 9:
+        case 10:
+            printf("Letter grade: A\n");
+            break;
         default:
             printf("Enter numerical grade  is error,Please enter number is 0-100\n");
             break;
@@ -471,7 +656,7 @@ void exec5_10_2() {
  * 提示：把数分解位两个数字。用一个switch语句显示第一位数字对应的单词，用
  * 第二个switch语句显示第二位数字对应的单词，不要11-19需要特殊处理.
  */
-void exec5_11(){
+void exec5_11() {
     int n;
     printf("Enter a two-digit number: ");
     scanf("%d", &n);
@@ -581,18 +766,23 @@ void exec5_11(){
 }
 
 //int main() {
-//    // exec5_01();
-//    //exec5_2();
-//    // exec5_3();
-//    //exec5_4();
-//    //exec5_5();
-//    //exec5_6();
-//    // exec5_7();
-//    // exec5_8_2();
-//    //exec5_09_02();
-//    //exec5_10();
-//    //exec5_10_2();
-////    exec5_11();
-////    return 0;
+//    exec5_01();
+//    课后编程练习05_01的优化
+//     callCountDigits();
+//     exec5_2();
+//    callConvertTo12HourFormat();
+//
+//    exec5_2();
+//     exec5_3();
+//    exec5_4();
+//    exec5_5();
+//    exec5_6();
+//     exec5_7();
+//     exec5_8_2();
+//    exec5_09_02();
+//    exec5_10();
+//    exec5_10_2();
+//    exec5_11();
+//    return 0;
 //}
 
