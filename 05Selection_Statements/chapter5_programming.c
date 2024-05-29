@@ -494,11 +494,12 @@ void exec5_8_2() {
 }
 
 /**
- * 编写一个程序，提示用户输入两个日期，然后显示哪一个日期更早
- * Enter first date (mm/dd/yy):3/6/08
- * Enter second date (mm/dd/yy):/5/7/07
- * 5/17/07 is earlier than 3/6/07
- * 方法一：看错输入的日期格式：以为日/月/年
+ *  Project 5.09
+    Write a program that prompts the user to enter two dates and then indicates
+    which date comes earlier on the calandar:
+    Enter first date (mm/dd/yyyy): 3/6/08
+    Enter second date (mm/dd/yyyy): 5/17/07
+    5/17/07 is earlier than 3/6/08
  */
 void exec5_09() {
     int day_1, month_1, year_1, day_2, month_2, year_2;
