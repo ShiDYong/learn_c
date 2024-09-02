@@ -204,9 +204,9 @@ void test_sizeof_function() {
     /*5.有些编译器会对表达式 sizeof(a) / sizeof(a[0])给出一条警告信息，这稍微有点烦人，变量i的类型可能是int(有符号类型),而
      * sizeof返回的值类型为size_t(无符号).由7.4节可知，把有符号和无符号整数相比较是很危险的，尽管在本例子中没有出现这样的问题。为了
      * 避免出现这一警告，可以将i的类型改成t，或者像下面这样，将 sizeof(a) / sizeof(a[0])强制转换成有符号整数*/
-    for (int i = 0; i < (int) sizeof(a) / sizeof(a[0]); ++i);
+   // for (int i = 0; i < (int) sizeof(a) / sizeof(a[0]); ++i);
     //但是表达式(int) sizeof(a) / sizeof(a[0])写起来不太方便，可以定义一个宏来表示它很有帮助
-    for (int i = 0; i < SIZE; i++);
+ //   for (int i = 0; i < SIZE; i++);
 
 
 }

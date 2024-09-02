@@ -20,7 +20,7 @@ void max_min(int a[], int n, int *max, int *min);
 
 int *max(int *a, int *b);
 
-int main(void) {
+//int main(void) {
     //case01_Pointer_variables();
     //case03_pointer_assignment();
     // case04_pointer_as_argument();
@@ -41,9 +41,9 @@ int main(void) {
 
 
 
-
-    return 0;
-}
+//
+//    return 0;
+//}
 
 /**
  * 11.1节：内存地址及其指针变量的关系：
@@ -150,16 +150,16 @@ void case03_pointer_assignment() {
    5.适用于基本数据类型：值传递通常用于传递基本数据类型，如整数、浮点数、字符等。
  * 通过修改9.3节的decompose函数来作为案例
  */
-void case04_pointer_as_argument() {
-    double x = 3.1415;
-    long i=  2.145L;
-    double d=1.34f;
-    //调用decompose函数
-    decompose(x, &i, &d);
-    printf("修改后的参数i的值 = %ld\n", i);
-    printf("修改后的参数d的值 = %f\n", d);
-
-}
+//void case04_pointer_as_argument() {
+//    double x = 3.1415;
+//    long i=  2.145L;
+//    double d=1.34f;
+//    //调用decompose函数
+//    decompose(x, &i, &d);
+//    printf("修改后的参数i的值 = %ld\n", i);
+//    printf("修改后的参数d的值 = %f\n", d);
+//
+//}
 
 /**
  *
@@ -194,15 +194,15 @@ void max_min(int a[], int n, int *max, int *min) {
         else if (a[i] < *min)
             *min = a[i];
     }
-
+}
     /*
      * 通常，当调用函数并且把指向变量的指针作为实际参数传入时，会假设函数将修改实际参数的变量。
      * 但如果仅仅时为了提高函数调用过程中参数的传递效率，而不是为了修改实际参数的值，可以使用关键字
-     * const来表明函数不会改变指针参数所指向的对象。const应放置在形式参数的声明中，后面紧跟者形式参数的类型说明。
-     //void f(const int *p)
-}
+     * const来表明函数不会改变指针参数所指向的对象。const应放置在形式参数的声明中，后面紧跟者形式参数的类型说明
+     */
 
-/**
+
+/*
  * 11.5:指针作为返回值
  * 我们不仅可以为函数传递指针，而且还可以编写返回指针的函数。返回指针的函数是相对普遍的
  * 下面案例给定指向两个整数的指针时，下列函数返回指向两个整数中较大数的指针

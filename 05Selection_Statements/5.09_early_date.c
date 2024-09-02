@@ -146,8 +146,8 @@ bool read_date(Date *date) {
     }
     return true;
 }
-
-int main() {
+//
+//int main() {
 
     //exec05_09_04的代码优化
 //    Date date1, date2;
@@ -184,32 +184,32 @@ int main() {
     //Constants such as MIN_YEAR, MAX_YEAR, MIN_MONTH, MAX_MONTH, and MIN_DAY are defined to avoid magic numbers in the code.
     //This makes it easier to modify these values if needed and improves code clarity.
     //By following these practices, the code becomes more reliable and maintainable, ensuring it is robust, easy to understand, and easy to modify.
-    Date date1, date2;
-
-    // Prompt user to enter the first date
-    printf("Enter first date (mm/dd/yyyy): ");
-    if (!read_date(&date1)) {
-        return 1;
-    }
+//    Date date1, date2;
+//
+//    // Prompt user to enter the first date
+//    printf("Enter first date (mm/dd/yyyy): ");
+//    if (!read_date(&date1)) {
+//        return 1;
+//    }
 
     // Prompt user to enter the second date
-    printf("Enter second date (mm/dd/yyyy): ");
-    if (!read_date(&date2)) {
-        return 1;
-    }
-
-    // Compare the dates
-    int result = compare_dates(date1, date2);
-
-    if (result < 0) {
-        printf("%02d/%02d/%04d is earlier than %02d/%02d/%04d\n", date1.month, date1.day, date1.year, date2.month,
-               date2.day, date2.year);
-    } else if (result > 0) {
-        printf("%02d/%02d/%04d is earlier than %02d/%02d/%04d\n", date2.month, date2.day, date2.year, date1.month,
-               date1.day, date1.year);
-    } else {
-        printf("Both dates are the same.\n");
-    }
-    return 0;
-
-}
+//    printf("Enter second date (mm/dd/yyyy): ");
+//    if (!read_date(&date2)) {
+//        return 1;
+//    }
+//
+//    // Compare the dates
+//    int result = compare_dates(date1, date2);
+//
+//    if (result < 0) {
+//        printf("%02d/%02d/%04d is earlier than %02d/%02d/%04d\n", date1.month, date1.day, date1.year, date2.month,
+//               date2.day, date2.year);
+//    } else if (result > 0) {
+//        printf("%02d/%02d/%04d is earlier than %02d/%02d/%04d\n", date2.month, date2.day, date2.year, date1.month,
+//               date1.day, date1.year);
+//    } else {
+//        printf("Both dates are the same.\n");
+//    }
+//    return 0;
+//
+//}

@@ -8,6 +8,8 @@
 #include<stdbool.h>
 #include<time.h>
 #include<stdlib.h>
+#include <stddef.h>
+#include <string.h>
 
 #define N 10
 #define LEN 24
@@ -16,7 +18,11 @@ void exec12_01();
 
 void exec12_02();
 
-void exec12_03();
+void reverseArray(int arr[], int size);
+
+void printArray(const char *label, const int arr[], int size);
+
+void test_reverse_array();
 
 void exec12_05();
 
@@ -47,22 +53,21 @@ float exec12_16_find_highest_temp(const int a[], int n);
 
 int sum_two_dimensional_array(const int a[][LEN], int n);
 
-void main() {
-    //exec12_01();
-    // exec12_03();
-    //  exec12_05();
-//    int a[N] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, largest, second_largest;
-//    //exec12_11_find_largest(a,N);
-//    exec12_12_find_two_largest(a, N, &largest, &second_largest);
+int main(void) {
+
+    //测试数组的反转
+    test_reverse_array();
+    return 0;
+
     //课后练习14题目
-    int rows = 7, clos = 24, key = 8, n = 7 * 24;
-    int temperatures[rows][clos];
-    int i, j;
-    for (i = 0; i < rows; i++) {
-        for (j = 0; j < clos; j++)
-            temperatures[i][j] = temp_number();/*通过随机数给二维数组赋值*/
-    }
-    int k, count = 0;
+//    int rows = 7, clos = 24, key = 8, n = 7 * 24;
+//    int temperatures[rows][clos];
+//    int i, j;
+//    for (i = 0; i < rows; i++) {
+//        for (j = 0; j < clos; j++)
+//            temperatures[i][j] = temp_number();/*通过随机数给二维数组赋值*/
+//    }
+//    int k, count = 0;
 //    bool has32 = false;
 //    while (k < rows) { //对于二维数组的遍历求值，可将二维数组拆分多个一位数组，然后调用一纬数组的方法
 //        int *rowPtr = temperatures[k]; /*Get a pointer to the current row*/
@@ -91,8 +96,10 @@ void main() {
      }*/
 
     //课后练习题17的使用
-    int sum = sum_two_dimensional_array(temperatures, rows);
-    printf("二维数组的求和方法的结果: %d\n", sum);
+//    int sum = sum_two_dimensional_array(temperatures, rows);
+//    printf("二维数组的求和方法的结果: %d\n", sum);
+
+
 }
 
 /**
@@ -110,63 +117,145 @@ float temp_number() {
 
 
 /**
- * 课后练习题第一题：假设下列声明是有效的
+ * Exercise 12.01
+Suppose that the following declarations are in effect:
+int a[] = {5, 15, 34, 54, 14, 2, 52, 72};
+int *p = &a[1], *q = &a[5];
+(a) What is the value of `*(p+3)`?
+(b) What is the value of `*(q-3)`?
+(c) What is the value of `q - p`?
+(d) Is the condition `p < q` true or false?
+(e) Is the condition `*p < *q` true or false?
  */
 void exec12_01() {
     int a[] = {5, 15, 34, 54, 14, 2, 52, 72};
     int *p = &a[1], *q = &a[5];
+    //p = &a[1] => p 指向 a[1] (值为 15)
+    //q = &a[5] => q 指向 a[5] (值为 2)
     //1.*(p+3)的值是多少？
-    printf("%d\n", *(p + 3));
+    printf("%d\n", *(p + 3)); //*(p + 3) = a[4] = 14
+
     //2.*(q-3)的值是多少？
-    printf("%d\n", *(q - 3));
+    printf("%d\n", *(q - 3)); //q 指向 a[5]，q - 3 指向 a[2]=34
+
 
     //3.q-p的值是多少？
-    printf("%d\n", q - p);
+    printf("%d\n", q - p);//q 指向 a[5]，p 指向 a[1]，所以 q - p 是这两个指针之间的元素差：q - p = (5 - 1) = 4
+
     //4.p<q的结果是真还是假？ true
-    if (p < q)
+    if (p < q) //p 指向 a[1]，q 指向 a[5]，所以 p 小于 q：
+
         printf("true\n");
     //5.*p<*q的结果是真还是假？false
-    if (*p < *q)
+    if (*p < *q) //*p 的值是 15，*q 的值是 2，所以 *p 不小于 *q：
+
         printf("true\n");
 
 
 }
 
 /**
- * 课后练习题02:
- * 假设high、low和middle是具有相同类型的指针变量，并且low和high指向数组元素。下面的语句为什么是不合法的，如何修改？
+Exercise 12.02
+Suppose that `high`, `low` and `middle` are all pointer variables of the same
+type, and that `low` and `high` point to elements of an array. What is the
+following statement illegal, and how could it be fixed?
+```c
+middle = (low + high) / 2;
  */
 void exec12_02() {
-    int a[N], *high, *low, *middle;
-    // middle = (high + low) / 2;//该语句是非法的，因为指针不能相加。 这
-    //语句可以通过减去指针来修复，这是合法的：
-    middle = (high - low) / 2 + low;
+    /*
+     * 分析：
+     * 1.在C语言中，low 和 high 是指向数组元素的指针。这意味着 low 和 high 不是普通的整数，而是地址值。
+       2.指针的加法操作 (low + high) 是不被允许的，因为指针加法仅限于将指针与整数相加，以得到新的指针位置，而不是指针与另一个指针进行加法。
+       3.指针与指针之间的除法 ((low + high) / 2) 也是不合法的。你不能直接对两个指针进行数学运算或比较。指针运算主要包括加法、减法和比较（例如 low < high）
+       正确计算中间位置：
+       两个指针 low 和 high，它们指向同一个数组的不同元素，你可以按照以下步骤计算它们之间的中间位置：
+       1.计算距离：使用指针减法（high - low）来计算两个指针之间的元素数量。
+       2.计算中间位置：将距离除以 2，得到中间位置的偏移量。
+       3.更新中间指针：用 low 指针加上这个偏移量，得到中间位置的指针
+     */
+    int array[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    int *low = &array[2];   // 指向 array[2]，值为 3
+    int *high = &array[7];  // 指向 array[7]，值为 8
+    int *middle;
+    // 计算中间位置的指针
+    ptrdiff_t distance = high - low;      // 计算 low 和 high 之间的元素数量
+    middle = low + (distance / 2);        // 计算中间位置
+
+    // 打印结果
+    printf("low points to: %d\n", *low);
+    printf("high points to: %d\n", *high);
+    printf("middle points to: %d\n", *middle);  // 应该输出 array[4] 的值，即 5
+
 }
 
 
 /**
- * 课后练习题3:
- * 下列语句执行后，数组a的内容是什么
- */
-void exec12_03() {
+ *  Exercise 12.03
+    What will be the contents of the `a` array after the following statements are
+    executed?
+    ```c
+    #define N 10
     int a[N] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-    exec12_06_sum_array(a, N);
-    int *p = &a[0], *q = &a[N - 1], temp;
+    int *p = &a[0], *q = &a[N-1], temp;
+    while (p < q) {
+        temp = *p;
+        *p++ = *q;
+        *q-- = temp;
+    }
+ */
+void reverseArray(int arr[], int size) {
+    if (size <= 1) return; //如果数组为空或只有一个元素，则无需反转
+    int *p = &arr[0], *q = &arr[N - 1], temp;
     while (p < q) {
         temp = *p;
         *p++ = *q;
         *q-- = temp;  //实现数组逆序
     }
+//通过数组下标的方式：当数组长度为奇数时，中间的元素不会被交换。在这个特定的实现中，这不是一个问题，因为反转操作仍然正确
+//    for (int i = 0; i < size / 2; i++) {
+//      int tmp = arr[i];
+//      arr[i] = arr[N-1-i];
+//      arr[N-1-i] = temp;
+//    }
 
-    for (int i = 0; i < N; i++)
-        printf(" %d", a[i]);
 }
 
-
-/**
- * 课后练习题04:用指针变量top_ptr代替整型变量top来重新编写10.2节的函数make_empty、is_empty和is_full.
+/*
+ * 打印数组
  */
-void exec12_04() {
+void printArray(const char *label, const int arr[], int size) {
+    //打印反转后的数组
+    printf("%s", label);
+    for (int i = 0; i < size; i++)
+        printf(" %d", arr[i]);
+    printf("\n");
+}
+
+/*
+ * 测试打印数组的测试用例
+ */
+void test_reverse_array() {
+    //正常情况测试
+    int normal[N] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    reverseArray(normal, N);
+    printArray("Normal case: ", normal, N);
+
+    //边界值测试-单个元素的数组
+    int singleElement[1] = {40};
+    reverseArray(singleElement, 1);
+    printArray("Single element array: ", singleElement, 1);
+
+    //边界值cesium - 空数组
+    int empty[0];
+    reverseArray(empty, 0);
+    printArray("Empty array: ", empty, 0);
+    //特殊值测试-相同元素的数组
+    int sameElements[N];
+    memset(sameElements, 1, sizeof(sameElements)); //填充数组全为1
+    reverseArray(sameElements, N);
+    printArray("Same elements array: ", sameElements, N);
+
 
 }
 
@@ -221,13 +310,14 @@ int exec12_06_sum_array(const int a[], int n) {
 }
 
 /**
- * 课后练习07:编写下列函数
- * a是待搜索的数组，n是数组中元素的数量，key是搜素键。如果key与数组a的某个元素匹配了，那么search函数返回true;
- * 否则返回false。要求使用指针算术运算符而不是取下标来访问数组元素。
- * @param a
- * @param n
- * @param key
- * @return
+ Exercise 12.07
+Write the following function:
+```c
+bool search(const int a[], int n, int key);
+`a` is an array to be searched, `n` is the number of elements in the array, and
+`key` is the search key. `search` should return `true` if `key` matches some
+element of `a`, and `false` if it doesn't. Use pointer arithmetic -- not
+subscripting -- to visit array elements.
  */
 bool exec12_07_search(const int a[], int n, int key) {
     bool flag = false;
@@ -237,46 +327,104 @@ bool exec12_07_search(const int a[], int n, int key) {
             flag = true;
     return flag;
 
+
+    //使用while进行实现
+//    const int *q = a;
+// This means q is a pointer to a const int. You can change the pointer
+//  q itself to point to different addresses, but you cannot change the value of the int that p points to
+//    const int *end = a + n;
+//    while (q < end){
+//        if(*q == key) return true;
+//        q++;
+//    }
+//    return false;
 }
 
 
 /**
- * 课后练习题08：
- * 用指针算术运算符代替数组取下标来重新编写下面的函数。
- * 换句话说，消除变量i和所有用到[]运算符的地方。）要求改动尽可能少。
- * @param a
- * @param n
+ Exercise 12.08
+Rewrite the following function to use pointer arithmetic instead of array
+subscripting. (In other words, eliminate the variable `i` and all uses of the
+`[]` operator.) Make as few changes as possible.
+```c
+void store_zeros(int a[], int n)
+{
+    int i;
+
+    for (i = 0; i < n; i++)
+        a[i] = 0;
+}
  */
 void exec12_08_store_zeros(int a[], int n) {
 //    int i;
 //    for (i = 0; i < n; i++)
 //        a[i] = 0;
-    int *p;
-    for (p = a; p < a + n; p++)
-        *p = 0;
+    //使用指针实现
+//    int *p;
+//    for (p = a; p < a + n; p++)
+//        *p = 0;
+    //使用while循环语句实现
+    int *q = a;// 初始化指针p为数组a的开始位置
+    /*
+     * 指针与整数：指针 p 用于访问数组中的元素，它指向数组中的具体地址。而 n 是一个整数，表示数组的长度。
+     * 比较指针与整数是不正确的用法。也就是：指针和整数是不同类型，直接比较会导致逻辑错误
+       指针算术：a + n 表示从数组 a 开始向后偏移 n 个元素的位置，即数组的结束位置（超出数组最后一个元素的下一个位置）。
+       所以，比较 p 和 a + n 是有意义的，确保指针在数组范围内移动
+     */
+    int const *end = a + n;
+    while (q < end) { //当指针p小于数组a的结束位置时继续循环
+        *q = 0;
+        q++;
+    }
 
 }
 
 /**
- * 课后练习题09:编写下列函数
- * a和b都指向长度为n的数组。函数返回a[0]*b[0]+a[1]*b[1]+...+a[n-1]*b[n-1]
- * 要求使用指针算术运算符而不是取下标来访问数组元素.
+ Exercise 12.09
+Write the following function:
+```c
+double inner_product(const double *a, const double *b, int n);
+`a` and `b` both point to arrays of length `n`. The function should return
+`a[0] * b[0] + a[1] * b[1] +` ... `+ a[n-1] * b[n-1]`. Use pointer arithmetic --
+not subscripting -- to visit array elements.
  * @param a
  * @param b
  * @return
  */
-double exec12_09_inner_product(const double *a, const double *b, int n) {
-    double sum = 0, *q, *p;
-    for (q = a, q = b; q < a + n, q < b + n; p++, q++)
-        sum += *q * (*p);
+/*double exec12_09_inner_product(const double *a, const double *b, int n) {
+    double result = 0.0;
+//    const double *pa = a; // 指针 pa 遍历数组 a
+//    const double *pb = b; // 指针 pb 遍历数组 b
+//
+//    for (int i = 0; i < n; i++) {
+//        result += (*pa) * (*pb);
+//        pa++; // 移动到下一个元素
+//        pb++; // 移动到下一个元素
+//    }
 
-    //另外一种更简洁写法
-    int i = 0;
-    while (i++ < n)
+    //for循环还可以这样写
+
+    // 使用 for 循环遍历数组
+    for (const double *pa = a, *pb = b; pa < a + n; pa++, pb++) {
+        result += (*pa) * (*pb); // 计算当前元素的乘积并加到结果中
+    }
+
+
+    //这种写法是正确的，但略显简洁且有些风险，因为在循环中 i 从 0 开始，
+    // 在 i++ < n 中 i 增加到 n 之后退出。
+    // 可能会导致不必要的循环步骤，但在这个特定场景下，代码逻辑是可以接受的
+//    int e = 0;
+//    while (e++ < n)
+//        sum += *a++ * *b++;
+//    return sum;
+    //while循环语句更加简单实现：
+    while (n--) {
         sum += *a++ * *b++;
+    }
+
     return sum;
 
-}
+}*/
 
 
 /**
@@ -350,7 +498,7 @@ void exec12_13_two_dimensional_array(int n, double ident[n][n]) {
     double *p = ident[0];
     int zeros = 0;
     while (p++ < ident[0] + n * n) {
-        if (zeros = n) {
+        if (zeros == n) {
             *p = 1;
             zeros = 0;
         } else {

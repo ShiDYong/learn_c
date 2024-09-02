@@ -86,14 +86,13 @@ void sum_integer() {
     int n, sum = 0;  //这里要添加初始化默认值0，
     printf("This program sums a series of integer.\n");
     printf("Enter integers (0 to terminate): ");
-    scanf("%d", &n);  //先获取第一个输入的字符，先判断后累加后,不影响最后加的结果
-    while (n != 0) {  //因为是数列求和，0可以排除掉
+    //将读取输入和检查终止结合在 while 循环条件中：while (scanf("%d", &number) && number != 0)。
+    //这样就无需 if (number == 0) 检查和 break 语句，使代码更干净、更简洁。
+    while (scanf("%d",&n) && n !=0) {
         sum += n;
-        scanf("%d", &n); //这里进行累加后再获取输入的第二个字符，非常巧妙，但是有问题，输入只有一个数或者
-        //输入多个数最后一个数后就会卡住程序，因为scanf函数获取不到下一个整数就会停止住
-        //目前暂时无法相除对应的方法，学到后面字符串相关操作再过来处理
+
     }
-    printf("The sum is %d\n", sum);
+    printf("The sum is: %d\n", sum);
 
 }
 
@@ -346,14 +345,14 @@ void balance_check() {
 }
 
 //int main() {
-    // printf("compute_smallest_number方法返回的值: %d\n", compute_smallest_number(8));
-    //display_countdown(10);
-    // prints_square_table_2();
-    //sum_integer();
-    //do_while_statement();
-    // calculate_number_digits();
-    //  break_test();
-    //test_continue();
+// printf("compute_smallest_number方法返回的值: %d\n", compute_smallest_number(8));
+//    display_countdown(10);
+//     prints_square_table_2();
+//    sum_integer();
+//    do_while_statement();
+//     calculate_number_digits();
+//      break_test();
+//    test_continue();
 //    balance_check();
 //    return 0;
 //}

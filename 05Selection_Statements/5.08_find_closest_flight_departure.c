@@ -249,7 +249,7 @@ int input_time(int *hours, int *minutes) {
     return 1;
 }
 
-int main() {
+//int main() {
 //    Flight flights[NUM_FLIGHTS];
 //    initialize_flight01(flights);
 //
@@ -270,13 +270,13 @@ int main() {
     //内存效率：使用指针操作内存，更加高效。
     //模块化设计：代码结构清晰，各个功能模块分离，提高了可维护性和复用性。
     //错误处理：处理各种可能的异常情况，增强了代码的鲁棒性
-    Flight *flights = malloc(NUM_FLIGHTS * sizeof(Flight));
-    if (flights == NULL) {
-        fprintf(stderr, "Memory allocation failed\n");
-        return 1;
-    }
-
-    initialize_flights(flights);
+//    Flight *flights = malloc(NUM_FLIGHTS * sizeof(Flight));
+//    if (flights == NULL) {
+//        fprintf(stderr, "Memory allocation failed\n");
+//        return 1;
+//    }
+//
+//    initialize_flights(flights);
     //qsort 函数具有以下特点、优势和不足：
     //特点：
     //快速排序算法：qsort 函数使用快速排序算法来对数组进行排序。快速排序算法通常被认为是一种高效的排序算法，其平均时间复杂度为 O(nlogn)。
@@ -291,20 +291,20 @@ int main() {
     //不稳定性：快速排序算法本身是不稳定的，这也导致 qsort 函数是不稳定的。在排序过程中，相等的元素可能会交换位置，导致它们的相对顺序发生变化。
     //对大型数组的性能影响：虽然 qsort 是一个高效的排序算法，但在处理非常大的数组时，可能会受到内存访问模式的限制。由于快速排序算法在最坏情况下的时间复杂度为 O(n^2)，可能会导致性能下降。
     //综上所述，qsort 函数是一个通用、高效的排序函数，适用于各种类型的数组。它采用快速排序算法，具有较好的性能和灵活性。但需要注意的是，它是一个不稳定的排序算法，并且在处理大型数组时可能会受到性能影响。
-    qsort(flights, NUM_FLIGHTS, sizeof(Flight), compare_flights);
-
-    int hours, minutes;
-    if (!input_time(&hours, &minutes)) {
-        free(flights);
-        return 1;
-    }
-
-    int user_time = time_in_minutes(hours, minutes);
-    Flight *closest_flight = find_closest_flight(flights, NUM_FLIGHTS, user_time);
-
-    print_flight_info(closest_flight);
-
-    free(flights);
-    return 0;
-
-}
+//    qsort(flights, NUM_FLIGHTS, sizeof(Flight), compare_flights);
+//
+//    int hours, minutes;
+//    if (!input_time(&hours, &minutes)) {
+//        free(flights);
+//        return 1;
+//    }
+//
+//    int user_time = time_in_minutes(hours, minutes);
+//    Flight *closest_flight = find_closest_flight(flights, NUM_FLIGHTS, user_time);
+//
+//    print_flight_info(closest_flight);
+//
+//    free(flights);
+//    return 0;
+//
+//}

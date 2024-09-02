@@ -2,7 +2,6 @@
 Created by mason on 2023/6/24
 第九章课后编程练习题：
  */
-#include<stdio.h>
 
 #define MAX_SIZE 100
 
@@ -58,6 +57,7 @@ void selection_sort(int a[], int n) {
         if (a[i] > a[largest])
             largest = i;
     }
+
     temp = a[largest];
     a[largest] = a[n - 1];
     a[n - 1] = temp;
